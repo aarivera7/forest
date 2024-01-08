@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  MaterialApp.router(
       debugShowCheckedModeBanner: false,
-        title: 'Viva City',
+        title: 'Viva el Flutter',
         routerConfig: appRouter,
     );
   }
