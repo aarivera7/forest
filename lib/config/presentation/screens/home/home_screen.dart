@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:socio_bosques/config/presentation/menu/home_card.dart';
+import 'package:socio_bosques/config/presentation/screens/forms/form_1_screen.dart';
 import 'package:socio_bosques/config/responsive.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -18,8 +20,9 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: [
           Expanded(child: ListView.builder(itemCount: homeItems.length, itemBuilder: (BuildContext context, int index) {
-            return _HomeCard(title: homeItems[index].title, image: homeItems[index].image);
+            return _HomeCard(title: homeItems[index].title, image: homeItems[index].image, route: homeItems[index].route,);
           }))
+          , TextButton(onPressed: (){ context.pushReplacementNamed(Form1Screen.name);}, child: Text('form1'))
       ]),
     );
   }
@@ -28,8 +31,9 @@ class HomeScreen extends StatelessWidget {
 class _HomeCard extends StatelessWidget {
   final String title;
   final String image;
+  final String route;
   const _HomeCard({
-    super.key, required this.title, required this.image,
+    super.key, required this.title, required this.image, required this.route
   });
 
   @override
