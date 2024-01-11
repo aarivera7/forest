@@ -4,7 +4,7 @@ import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart'
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_background_auth.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_elevated_button.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_buttoms_auth.dart';
-import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_form.dart';
+import 'package:socio_bosques/config/presentation/screens/widgets/custom_login_text_form.dart';
 import 'package:socio_bosques/config/responsive.dart';
 
 class LoginScreen extends StatelessWidget {
