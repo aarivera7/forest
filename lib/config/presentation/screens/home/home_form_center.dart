@@ -108,10 +108,10 @@ class _FormCard extends StatelessWidget {
                   }).toList();
                 },
                 onSelected: (String selectedOption) {
-                  // Manejar la opción seleccionada aquí
+                  
                   print("Seleccionaste: $selectedOption");
 
-                  // Redirigir a diferentes páginas según la opción seleccionada
+                 
                   switch (selectedOption) {
                     case 'Opción 1':
                       context.pushReplacementNamed('ruta_opcion_1');
@@ -119,7 +119,7 @@ class _FormCard extends StatelessWidget {
                     case 'Opción 2':
                       context.pushReplacementNamed('ruta_opcion_2');
                       break;
-                    // Agrega más casos según sea necesario
+            
                   }
                 },
               ),
