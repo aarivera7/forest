@@ -20,7 +20,7 @@ const List<HomeItem> homeItems = [
   HomeItem(
     image: 'assets/images/formulario.jpg',
     title: 'FORMULARIO',
-    route: '/form1'
+    route: '/form_center'
   ),
 
   HomeItem(

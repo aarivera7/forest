@@ -20,7 +20,7 @@ class TextFormField1 extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: responsive.wp(4.1), 
+            horizontal: responsive.wp(4.5), 
             vertical: responsive.hp(0.5)
           ),
           child: Text(label, style: TextStyle(
