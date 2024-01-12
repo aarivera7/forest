@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
           Expanded(child: ListView.builder(itemCount: homeItems.length, itemBuilder: (BuildContext context, int index) {
             return _HomeCard(title: homeItems[index].title, image: homeItems[index].image, route: homeItems[index].route,);
           }))
-          , TextButton(onPressed: (){ context.pushReplacementNamed(Form1Screen.name);}, child: Text('forms'))
+          , //TextButton(onPressed: (){ context.pushReplacementNamed(Form1Screen.name);}, child: Text('forms'))
       ]),
     );
   }

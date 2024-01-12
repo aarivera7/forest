@@ -2,18 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:socio_bosques/config/responsive.dart';
 
 
-class LoginTextFormField extends StatelessWidget {
+class LoginTextFormField extends StatefulWidget {
   final String label;
   final IconData icon;
   final bool isPassword;
   final IconData? suffixIcon;
   final String title;
+  final TextEditingController? controller;
   
   const LoginTextFormField({
-    super.key, required this.label, required this.icon, required this.isPassword, this.suffixIcon, required this.title,
+    super.key, 
+    required this.label, 
+    required this.icon, 
+    required this.isPassword, 
+    this.suffixIcon, 
+    required this.title, 
+    this.controller,
   });
 
+  @override
+  State<LoginTextFormField> createState() => _LoginTextFormFieldState();
+}
 
+class _LoginTextFormFieldState extends State<LoginTextFormField> {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
@@ -21,7 +32,7 @@ class LoginTextFormField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: TextStyle(
+        Text(widget.title, style: TextStyle(
           color: Colors.white,
           fontSize: responsive.ip(1.8),
         )),
@@ -32,11 +43,12 @@ class LoginTextFormField extends StatelessWidget {
             vertical: responsive.hp(1)
           ),
           child: TextFormField(
-            obscureText: isPassword,
+            obscureText: widget.isPassword,
             style: TextStyle(
               color: Colors.white,
               fontSize: responsive.ip(1.2)
             ),
+            controller: widget.controller,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(responsive.ip(2)),
@@ -61,13 +73,13 @@ class LoginTextFormField extends StatelessWidget {
               fillColor: const Color(0xff102601),
               filled: true,
               prefixIcon: Icon(
-                icon,
+                widget.icon,
                 size: responsive.ip(2.5),
                 color: Colors.white
               ),
-              hintText: label,
+              hintText: widget.label,
               suffixIcon: Icon(
-                suffixIcon,
+                widget.suffixIcon,
                 size: responsive.ip(2.5),
                 color: Colors.white
               ),
