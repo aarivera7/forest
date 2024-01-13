@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:socio_bosques/config/presentation/menu/form_center_card.dart';
-import 'package:socio_bosques/config/presentation/menu/home_card.dart';
 import 'package:socio_bosques/config/responsive.dart';
 
 class FormCenterScreen extends StatelessWidget {
@@ -32,7 +31,7 @@ class FormCenterScreen extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return _FormCard(
                     title: formCenterItems[index].label,
-                    route: formCenterItems[index].route,
+                    routes: formCenterItems[index].routes,
                     menuOptions: formCenterItems[index].menuOptions,
                   );
                 },
@@ -47,12 +46,12 @@ class FormCenterScreen extends StatelessWidget {
 
 class _FormCard extends StatelessWidget {
   final String title;
-  final String route;
+  final List<String> routes;
   final List<String> menuOptions;
 
   const _FormCard({
     required this.title,
-    required this.route,
+    required this.routes,
     required this.menuOptions,
   });
 
@@ -64,7 +63,7 @@ class _FormCard extends StatelessWidget {
       children: [
         ElevatedButton(
           onPressed: () {
-            context.push(route);
+            context.push(routes[0]);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.grey,
@@ -113,11 +112,16 @@ class _FormCard extends StatelessWidget {
 
                  
                   switch (selectedOption) {
-                    case 'Opción 1':
-                      context.pushReplacementNamed('ruta_opcion_1');
+                    case 'Ficha de campo para evaluación de predios':
+                    case 'Formulario de Monitoreo Ambiental':
+                    case 'Plan de aprovechamiento forestal':
+                      context.push(routes[0]);
                       break;
-                    case 'Opción 2':
-                      context.pushReplacementNamed('ruta_opcion_2');
+                    
+                    case 'Ficha para registro de víveros':
+                    case 'Formulario de Postulación':
+                    case 'Acta de retención de productos forestales y vida silvestre':
+                      context.push(routes[1]);
                       break;
             
                   }
