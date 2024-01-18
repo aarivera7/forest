@@ -7,6 +7,9 @@ import 'package:socio_bosques/config/presentation/screens/forms/form_2_screen.da
 import 'package:socio_bosques/config/presentation/screens/forms/form_3_1_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/forms/form_3_2_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/forms/form_3_screen.dart';
+import 'package:socio_bosques/config/presentation/screens/forms/form_4_screen.dart';
+import 'package:socio_bosques/config/presentation/screens/forms/form_5_screen.dart';
+import 'package:socio_bosques/config/presentation/screens/forms/form_6_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/home/home_form_center.dart';
 import 'package:socio_bosques/config/presentation/screens/screens.dart';
 
@@ -88,6 +91,24 @@ final appRouter = GoRouter(
       path:'/form3_2',
       name: Form3Screen2.name,
       builder: (context, state) => const Form3Screen2(),
+    ),
+
+    GoRoute(
+      path:'/form4',
+      name: Form4Screen.name,
+      builder: (context, state) => const Form4Screen(),
+    ),
+
+    GoRoute(
+      path:'/form5',
+      name: Form5Screen.name,
+      builder: (context, state) => const Form5Screen(),
+    ),
+    
+    GoRoute(
+      path:'/form6',
+      name: Form6Screen.name,
+      builder: (context, state) => const Form6Screen(),
     ),
   ],
 );
