@@ -14,7 +14,7 @@ class Form1Screen1 extends StatefulWidget {
 }
 
 class _Form1Screen1State extends State<Form1Screen1> {
-  UseForestal? _useForestal = UseForestal.plantacionesProduccion;	
+  String? _useForestal = 'plantacionesProduccion';	
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +49,9 @@ class _Form1Screen1State extends State<Form1Screen1> {
                 children: [
                   RadioListTile(
                     title: Text("Plantaciones: (Producción)"),
-                    value: UseForestal.plantacionesProduccion,
+                    value: 'plantacionesProduccion',
                     groupValue: _useForestal, 
-                    onChanged: (UseForestal? value) {
+                    onChanged: (value) {
                       setState(() {
                         _useForestal = value;
                       });
@@ -59,9 +59,9 @@ class _Form1Screen1State extends State<Form1Screen1> {
                   ),
                   RadioListTile(
                     title: Text("Agroforestal"),
-                    value: UseForestal.agroforestal, 
+                    value: 'agroforestal', 
                     groupValue: _useForestal, 
-                    onChanged: (UseForestal? value) {
+                    onChanged: (value) {
                       setState(() {
                         _useForestal = value;
                       });
@@ -69,9 +69,9 @@ class _Form1Screen1State extends State<Form1Screen1> {
                   ),
                   RadioListTile(
                     title: Text("Regeneración"),
-                    value: UseForestal.regeneracion, 
+                    value: 'regeneracion', 
                     groupValue: _useForestal, 
-                    onChanged: (UseForestal? value) {
+                    onChanged: (value) {
                       setState(() {
                         _useForestal = value;
                       });
@@ -79,9 +79,9 @@ class _Form1Screen1State extends State<Form1Screen1> {
                   ),
                   RadioListTile(
                     title: Text("Reforestación (Protección)"),
-                    value: UseForestal.reforestacionProteccion, 
+                    value: 'reforestacionProteccion', 
                     groupValue: _useForestal, 
-                    onChanged: (UseForestal? value) {
+                    onChanged: (value) {
                       setState(() {
                         _useForestal = value;
                       });
@@ -89,9 +89,9 @@ class _Form1Screen1State extends State<Form1Screen1> {
                   ),
                   RadioListTile(
                     title: Text("Formaciones Pioneras"),
-                    value: UseForestal.formacionesPioneras, 
+                    value: 'formacionesPioneras', 
                     groupValue: _useForestal, 
-                    onChanged: (UseForestal? value) {
+                    onChanged: (value) {
                       setState(() {
                         _useForestal = value;
                       });

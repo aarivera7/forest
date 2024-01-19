@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:socio_bosques/config/presentation/screens/auth/firebase_auth/firebase_auth_services.dart';
+import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_auth/firebase_auth_services.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/login_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_background_auth.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_elevated_button.dart';

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
 import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_elevated_button.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_form_field.dart';
@@ -16,8 +18,24 @@ class Form6Screen extends StatefulWidget {
 }
 
 class _Form6ScreenState extends State<Form6Screen> {
-  Acta? _acta = Acta.retencion;
-  Accion? _accion = Accion.faltaEtiqueta;
+  String? _acta = 'retencion';
+  String? _accion = 'faltaEtiqueta';
+  TextEditingController nombreEmprProdController = TextEditingController(text: "");
+  TextEditingController cantidadController = TextEditingController(text: "");
+  TextEditingController presentacionController = TextEditingController(text: "");
+  TextEditingController registroController = TextEditingController(text: "");
+  TextEditingController numLoteEmpController = TextEditingController(text: "");
+  TextEditingController fechaController = TextEditingController(text: "");
+  TextEditingController produccionController = TextEditingController(text: "");
+  TextEditingController vencimientoController = TextEditingController(text: "");
+  TextEditingController nombreLicEmpresaController = TextEditingController(text: "");
+  TextEditingController nombreLicDecomisaController = TextEditingController(text: "");
+  TextEditingController notificadoEmpresaController = TextEditingController(text: "");
+  TextEditingController observacionController = TextEditingController(text: "");
+  TextEditingController nombreController = TextEditingController(text: "");
+  TextEditingController cedulaController = TextEditingController(text: "");
+  TextEditingController cargoPredController = TextEditingController(text: "");
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +75,9 @@ class _Form6ScreenState extends State<Form6Screen> {
                       ),
                   RadioListTile(
                     title: Text("Retención"),
-                    value: Acta.retencion, 
+                    value: 'retencion', 
                     groupValue: _acta, 
-                    onChanged: (Acta? value) {
+                    onChanged: (value) {
                       setState(() {
                         _acta = value;
                       });
@@ -67,26 +85,24 @@ class _Form6ScreenState extends State<Form6Screen> {
                   ),
                   RadioListTile(
                     title: Text("Decomiso"),
-                    value: Acta.decomiso, 
+                    value: 'decomiso', 
                     groupValue: _acta, 
-                    onChanged: (Acta? value){
+                    onChanged: ( value){
                       setState(() {
                         _acta = value;
                       });
                     },
                   ),
-                  TextFormField1(label: "Cédula:", hintText: "Ingrese la cédula",),
-                  TextFormField1(label: "Fecha: ", hintText: "Ingrese la Fecha",),
-                  TextFormField1(label: "Nombre de Producto: ", hintText: "Ingrese nombre del Producto",),
-                  TextFormField1(label: "Cantidad:", hintText: "Ingrese la Cantidad ",),
-                  TextFormField1(label: "Presentación: ", hintText: "Ingrese la Presentación",),
-                  TextFormField1(label: "Registro: ", hintText: "Ingrese el Registro",),
-                  TextFormField1(label: "N°: Lote: ", hintText: "Ingrese el N° de Lote",),
-                  TextFormField1(label: "Fecha:", hintText: "Ingrese la Fecha",),
-                  TextFormField1(label: "Producción:", hintText: "Ingrese  la Producción",),
-                  TextFormField1(label: "Fecha de Vencimiento:", hintText: "Ingrese la Fecha de Vencimiento",),
-                  TextFormField1(label: "Nombre y Lic De la Empresa:", hintText: "Ingrese el Nombre De La Empresa",),
-                  TextFormField1(label: "Nombre  y Lic  Retiene o Decomisa:", hintText: "Ingrese el Nombre Del Que Retiene",),
+                  TextFormField1(label: "Nombre de Producto: ", hintText: "Ingrese nombre del Producto", controller: nombreEmprProdController),
+                  TextFormField1(label: "Cantidad:", hintText: "Ingrese la Cantidad ", controller: cantidadController),
+                  TextFormField1(label: "Presentación: ", hintText: "Ingrese la Presentación", controller: presentacionController),
+                  TextFormField1(label: "Registro: ", hintText: "Ingrese el Registro", controller: registroController),
+                  TextFormField1(label: "N°: Lote: ", hintText: "Ingrese el N° de Lote", controller: numLoteEmpController),
+                  TextFormField1(label: "Fecha:", hintText: "Ingrese la Fecha", controller: fechaController),
+                  TextFormField1(label: "Producción:", hintText: "Ingrese  la Producción", controller: produccionController),
+                  TextFormField1(label: "Fecha de Vencimiento:", hintText: "Ingrese la Fecha de Vencimiento", controller: vencimientoController),
+                  TextFormField1(label: "Nombre y Lic De la Empresa:", hintText: "Ingrese el Nombre De La Empresa", controller: nombreLicEmpresaController),
+                  TextFormField1(label: "Nombre  y Lic  Retiene o Decomisa:", hintText: "Ingrese el Nombre Del Que Retiene", controller: nombreLicDecomisaController),
 
                   SizedBox(height: responsive.hp(1),),
                   Text("Motivo de acción: ", 
@@ -97,9 +113,9 @@ class _Form6ScreenState extends State<Form6Screen> {
                       ),
                   RadioListTile(
                     title: Text("Falta de Etiqueta"),
-                    value: Accion.faltaEtiqueta,
+                    value: 'faltaEtiqueta',
                     groupValue: _accion, 
-                    onChanged: (Accion? value) {
+                    onChanged: (value) {
                       setState(() {
                         _accion = value;
                       });
@@ -107,9 +123,9 @@ class _Form6ScreenState extends State<Form6Screen> {
                   ),
                   RadioListTile(
                     title: Text("Etiqueta no Aprobada"),
-                    value: Accion.etiquetaNoAprobada,
+                    value: 'etiquetaNoAprobada',
                     groupValue: _accion, 
-                    onChanged: (Accion? value){
+                    onChanged: (value){
                       setState(() {
                         _accion = value;
                       });
@@ -117,9 +133,9 @@ class _Form6ScreenState extends State<Form6Screen> {
                   ),
                   RadioListTile(
                     title: Text("Adulteración"),
-                    value: Accion.adulteracion,
+                    value: 'adulteracion',
                     groupValue: _accion, 
-                    onChanged: (Accion? value){
+                    onChanged: (value){
                       setState(() {
                         _accion = value;
                       });
@@ -127,9 +143,9 @@ class _Form6ScreenState extends State<Form6Screen> {
                   ),
                   RadioListTile(
                     title: Text("Deterioro"),
-                    value: Accion.deteriodo, 
+                    value: 'deteriodo', 
                     groupValue: _accion, 
-                    onChanged: (Accion? value){
+                    onChanged: (value){
                       setState(() {
                         _accion = value;
                       });
@@ -137,9 +153,9 @@ class _Form6ScreenState extends State<Form6Screen> {
                   ),
                   RadioListTile(
                     title: Text("Anomalía de Etiqueta"),
-                    value: Accion.anomalia, 
+                    value: 'anomalia', 
                     groupValue: _accion, 
-                    onChanged: (Accion? value){
+                    onChanged: (value){
                       setState(() {
                         _accion = value;
                       });
@@ -147,23 +163,49 @@ class _Form6ScreenState extends State<Form6Screen> {
                   ),
                   RadioListTile(
                     title: Text("Sin Registro"),
-                    value: Accion.sinRegistro, 
+                    value: 'sinRegistro', 
                     groupValue: _accion, 
-                    onChanged: (Accion? value){
+                    onChanged: (value){
                       setState(() {
                         _accion = value;
                       });
                     },
                   ),
 
-                  TextFormField1(label: "Notificado por la empresa: ", hintText: "Ingrese Notificado Por La Empresa",),
-                  TextFormField1(label: "Observación: ", hintText: "Ingrese la Observación",),
-                  TextFormField1(label: "Nombre: ", hintText: "Ingrese el Nombre",),
-                  TextFormField1(label: "Cédula: ", hintText: "Ingrese la Cédula",),
-                  TextFormField1(label: "Cargo: ", hintText: "Ingrese el Cargo",),
+                  TextFormField1(label: "Notificado por la empresa: ", hintText: "Ingrese Notificado Por La Empresa", controller: notificadoEmpresaController),
+                  TextFormField1(label: "Observación: ", hintText: "Ingrese la Observación", controller: observacionController),
+                  TextFormField1(label: "Nombre: ", hintText: "Ingrese el Nombre", controller: nombreController),
+                  TextFormField1(label: "Cédula: ", hintText: "Ingrese la Cédula", controller: cedulaController,),
+                  TextFormField1(label: "Cargo: ", hintText: "Ingrese el Cargo", controller: cargoPredController,),
 
                   SizedBox(height: responsive.hp(1),),
-                  ElevatedButtons(label: "Enviar", screen: HomeScreen.name), 
+                   ElevatedButton(
+                    onPressed: () async{
+                      await addPActaRetencionProductos("Acta de retención de productos forestales y vida silvestre", _acta,nombreEmprProdController.text, cantidadController.text,
+                      presentacionController.text, registroController.text, numLoteEmpController.text, fechaController.text,produccionController.text, vencimientoController.text,
+                      nombreLicEmpresaController.text, nombreLicDecomisaController.text, _accion,notificadoEmpresaController.text, observacionController.text, nombreController.text,
+                      cedulaController.text , cargoPredController.text,  DateTime.now()).then((_) {
+                      context.pushReplacement('/reportes');
+                      setState(() {
+                      });
+                      });
+                    },
+                    child: Text("FINALIZAR", style: TextStyle(
+                      color: Colors.white,
+                      fontSize: responsive.ip(1.2),
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(const Color(0xff467302)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(responsive.ip(1))
+                      )),
+                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                        horizontal: responsive.wp(8),
+                        vertical: responsive.hp(0.75)
+                      ))
+                    )
+                  ) 
                 ],
               ),
             ),

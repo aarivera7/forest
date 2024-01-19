@@ -28,4 +28,10 @@ const List<HomeItem> homeItems = [
     title: 'SINCRONIZACION',
     route: ''
   ),
+
+  HomeItem(
+    image: 'assets/images/reportes.png',
+    title: 'REPORTES',
+    route: '/reportes'
+  ),
 ];

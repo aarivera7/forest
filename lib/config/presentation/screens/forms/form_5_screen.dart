@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart';
-import 'package:socio_bosques/config/presentation/screens/widgets/custom_elevated_button.dart';
+import 'package:go_router/go_router.dart';
+import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_form_field.dart';
 import 'package:socio_bosques/config/responsive.dart';
 
@@ -18,9 +18,27 @@ class Form5Screen extends StatefulWidget {
 }
 
 class _Form5ScreenState extends State<Form5Screen> {
-  TipoOrg? _tipo = TipoOrg.natural;
-  Calidad? _calidad = Calidad.propietario;
-  Aprovechamiento? _aprovechamiento = Aprovechamiento.domestica;
+  String? _tipo = 'natural';
+  String? _calidad = 'propietario';
+  String? _aprovechamiento = 'domestica';
+  TextEditingController razonSocController = TextEditingController(text: "");
+  TextEditingController cedRucController = TextEditingController(text: "");
+  TextEditingController representanteController = TextEditingController(text: "");
+  TextEditingController cedRepresentanteController = TextEditingController(text: "");
+  TextEditingController direccionEmpController = TextEditingController(text: "");
+  TextEditingController ciudadController = TextEditingController(text: "");
+  TextEditingController telefonoController = TextEditingController(text: "");
+  TextEditingController emailController = TextEditingController(text: "");
+  TextEditingController especiesController = TextEditingController(text: "");
+  TextEditingController numArbolesController = TextEditingController(text: "");
+  TextEditingController volumController = TextEditingController(text: "");
+  TextEditingController especieAprovController = TextEditingController(text: "");
+  TextEditingController nombreaCieController = TextEditingController(text: "");
+  TextEditingController costoProyectController = TextEditingController(text: "");
+  TextEditingController nombrePredController = TextEditingController(text: "");
+  TextEditingController matriculaPredController = TextEditingController(text: "");
+  TextEditingController escrituraPredController = TextEditingController(text: "");
+  TextEditingController fechaPreController = TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
@@ -60,19 +78,20 @@ class _Form5ScreenState extends State<Form5Screen> {
                       ),
                   RadioListTile(
                     title: Text("Persona Natural"),
-                    value: TipoOrg.natural, 
+                    value: 'natural', 
                     groupValue: _tipo, 
-                    onChanged: (TipoOrg? value) {
+                    onChanged: (value) {
                       setState(() {
+                        print(value);
                         _tipo = value;
                       });
                     },
                   ),
                   RadioListTile(
                     title: Text("Persona Jurídica"),
-                    value: TipoOrg.juridica, 
+                    value: 'juridica', 
                     groupValue: _tipo, 
-                    onChanged: (TipoOrg? value){
+                    onChanged: (value){
                       setState(() {
                         _tipo = value;
                       });
@@ -80,9 +99,9 @@ class _Form5ScreenState extends State<Form5Screen> {
                   ),
                   RadioListTile(
                     title: Text("Publica"),
-                    value: TipoOrg.publica, 
+                    value: 'publica', 
                     groupValue: _tipo, 
-                    onChanged: (TipoOrg? value){
+                    onChanged: (value){
                       setState(() {
                         _tipo = value;
                       });
@@ -90,22 +109,22 @@ class _Form5ScreenState extends State<Form5Screen> {
                   ),
                   RadioListTile(
                     title: Text("Privada"),
-                    value: TipoOrg.privada, 
+                    value: 'privada', 
                     groupValue: _tipo, 
-                    onChanged: (TipoOrg? value){
+                    onChanged: (value){
                       setState(() {
                         _tipo = value;
                       });
                     },
                   ),
-                  TextFormField1(label: "Nombre o Razon Social:", hintText: "Ingrese Razon Social",),
-                  TextFormField1(label: "Cédula/RUC: ", hintText: "Ingrese la cédula o RUC",),
-                  TextFormField1(label: "Representante Legal:", hintText: "Ingrese el nombre del Representante Legal",),
-                  TextFormField1(label: "Cédula del Representante Legal", hintText: "Ingrese la cedula del Representante Legal",),
-                  TextFormField1(label: "Dirección:", hintText: "Ingrese la Dirección",),
-                  TextFormField1(label: "Cuidad: ", hintText: "Ingrese la Cuidad",),
-                  TextFormField1(label: "Teléfono:", hintText: "Ingrese el Teléfono",),
-                  TextFormField1(label: "E-mail", hintText: "Ingrese el E-mail",),
+                  TextFormField1(label: "Nombre o Razon Social:", hintText: "Ingrese Razon Social", controller: razonSocController,),
+                  TextFormField1(label: "Cédula/RUC: ", hintText: "Ingrese la cédula o RUC", controller: cedRucController),
+                  TextFormField1(label: "Representante Legal:", hintText: "Ingrese el nombre del Representante Legal",controller: representanteController),
+                  TextFormField1(label: "Cédula del Representante Legal", hintText: "Ingrese la cedula del Representante Legal", controller: cedRepresentanteController),
+                  TextFormField1(label: "Dirección:", hintText: "Ingrese la Dirección", controller: direccionEmpController),
+                  TextFormField1(label: "Cuidad: ", hintText: "Ingrese la Cuidad", controller: ciudadController),
+                  TextFormField1(label: "Teléfono:", hintText: "Ingrese el Teléfono", controller: telefonoController),
+                  TextFormField1(label: "E-mail", hintText: "Ingrese el E-mail", controller: emailController),
 
                   Text("Calidad en que actúa: ", 
                         style: TextStyle(
@@ -115,9 +134,9 @@ class _Form5ScreenState extends State<Form5Screen> {
                       ),
                   RadioListTile(
                     title: Text("Propietario"),
-                    value: Calidad.propietario,
+                    value: 'propietario',
                     groupValue: _calidad, 
-                    onChanged: (Calidad? value) {
+                    onChanged: (value) {
                       setState(() {
                         _calidad = value;
                       });
@@ -125,9 +144,9 @@ class _Form5ScreenState extends State<Form5Screen> {
                   ),
                   RadioListTile(
                     title: Text("Arrendatario"),
-                    value: Calidad.arrendatario,
+                    value: 'arrendatario',
                     groupValue: _calidad, 
-                    onChanged: (Calidad? value){
+                    onChanged: (value){
                       setState(() {
                         _calidad = value;
                       });
@@ -135,9 +154,9 @@ class _Form5ScreenState extends State<Form5Screen> {
                   ),
                   RadioListTile(
                     title: Text("Otro"),
-                    value: Calidad.otro, 
+                    value: 'otro', 
                     groupValue: _calidad, 
-                    onChanged: (Calidad? value){
+                    onChanged: ( value){
                       setState(() {
                         _calidad = value;
                       });
@@ -160,9 +179,9 @@ class _Form5ScreenState extends State<Form5Screen> {
                       ),
                   RadioListTile(
                     title: Text("Doméstico"),
-                    value: Aprovechamiento.domestica,
+                    value: 'domestica',
                     groupValue: _aprovechamiento, 
-                    onChanged: (Aprovechamiento? value) {
+                    onChanged: (value) {
                       setState(() {
                         _aprovechamiento = value;
                       });
@@ -170,9 +189,9 @@ class _Form5ScreenState extends State<Form5Screen> {
                   ),
                   RadioListTile(
                     title: Text("Único"),
-                    value: Aprovechamiento.unico,
+                    value: 'unico',
                     groupValue: _aprovechamiento, 
-                    onChanged: (Aprovechamiento? value){
+                    onChanged: (value){
                       setState(() {
                         _aprovechamiento = value;
                       });
@@ -180,9 +199,9 @@ class _Form5ScreenState extends State<Form5Screen> {
                   ),
                   RadioListTile(
                     title: Text("Persistente"),
-                    value: Aprovechamiento.persistente, 
+                    value: 'persistente', 
                     groupValue: _aprovechamiento, 
-                    onChanged: (Aprovechamiento? value){
+                    onChanged: (value){
                       setState(() {
                         _aprovechamiento = value;
                       });
@@ -190,9 +209,9 @@ class _Form5ScreenState extends State<Form5Screen> {
                   ),
                   RadioListTile(
                     title: Text("Arboles Aislados"),
-                    value: Aprovechamiento.arbolesAislados, 
+                    value: 'arboles Aislados', 
                     groupValue: _aprovechamiento, 
-                    onChanged: (Aprovechamiento? value){
+                    onChanged: (value){
                       setState(() {
                         _aprovechamiento = value;
                       });
@@ -200,9 +219,9 @@ class _Form5ScreenState extends State<Form5Screen> {
                   ),
                   RadioListTile(
                     title: Text("Caídos"),
-                    value: Aprovechamiento.caidos, 
+                    value: 'caidos', 
                     groupValue: _aprovechamiento, 
-                    onChanged: (Aprovechamiento? value){
+                    onChanged: (value){
                       setState(() {
                         _aprovechamiento = value;
                       });
@@ -210,9 +229,9 @@ class _Form5ScreenState extends State<Form5Screen> {
                   ),
                   RadioListTile(
                     title: Text("Muertos"),
-                    value: Aprovechamiento.muertos, 
+                    value: 'muertos', 
                     groupValue: _aprovechamiento, 
-                    onChanged: (Aprovechamiento? value){
+                    onChanged: (value){
                       setState(() {
                         _aprovechamiento = value;
                       });
@@ -220,9 +239,9 @@ class _Form5ScreenState extends State<Form5Screen> {
                   ),
                   RadioListTile(
                     title: Text("Tala"),
-                    value: Aprovechamiento.tala, 
+                    value: 'tala', 
                     groupValue: _aprovechamiento, 
-                    onChanged: (Aprovechamiento? value){
+                    onChanged: (value){
                       setState(() {
                         _aprovechamiento = value;
                       });
@@ -230,9 +249,9 @@ class _Form5ScreenState extends State<Form5Screen> {
                   ),
                   RadioListTile(
                     title: Text("Bosque Natural"),
-                    value: Aprovechamiento.bosqueNatural, 
+                    value: 'bosqueNatural', 
                     groupValue: _aprovechamiento, 
-                    onChanged: (Aprovechamiento? value){
+                    onChanged: (value){
                       setState(() {
                         _aprovechamiento = value;
                       });
@@ -240,9 +259,9 @@ class _Form5ScreenState extends State<Form5Screen> {
                   ),
                   RadioListTile(
                     title: Text("Bosque Sombrío"),
-                    value: Aprovechamiento.bosqueSombrio, 
+                    value: 'bosqueSombrio', 
                     groupValue: _aprovechamiento, 
-                    onChanged: (Aprovechamiento? value){
+                    onChanged: (value){
                       setState(() {
                         _aprovechamiento = value;
                       });
@@ -250,21 +269,21 @@ class _Form5ScreenState extends State<Form5Screen> {
                   ),
                   RadioListTile(
                     title: Text("Otro"),
-                    value: Aprovechamiento.otro, 
+                    value: 'otro', 
                     groupValue: _aprovechamiento, 
-                    onChanged: (Aprovechamiento? value){
+                    onChanged: (value){
                       setState(() {
                         _aprovechamiento = value;
                       });
                     },
                   ),
 
-                  TextFormField1(label: "Especies", hintText: "Ingrese las Especies",),
-                  TextFormField1(label: "No. Arboles", hintText: "Ingrese N°",),
-                  TextFormField1(label: "Volumen:", hintText: "Ingrese la Volumen",),
-                  TextFormField1(label: "Especie a Aprovechar(Nombre Común)", hintText: "Ingrese Nombre Común",),
-                  TextFormField1(label: "Nombre Cientifico", hintText: "Ingrese el Nombre Cientifico",),
-                  TextFormField1(label: "Costo del Proyecto ", hintText: "Ingrese Costo del Proyecto",),
+                  TextFormField1(label: "Especies", hintText: "Ingrese las Especies", controller: especiesController),
+                  TextFormField1(label: "No. Arboles", hintText: "Ingrese N°", controller: numArbolesController),
+                  TextFormField1(label: "Volumen:", hintText: "Ingrese la Volumen", controller: volumController),
+                  TextFormField1(label: "Especie a Aprovechar(Nombre Común)", hintText: "Ingrese Nombre Común", controller: especieAprovController),
+                  TextFormField1(label: "Nombre Cientifico", hintText: "Ingrese el Nombre Cientifico", controller: nombreaCieController),
+                  TextFormField1(label: "Costo del Proyecto ", hintText: "Ingrese Costo del Proyecto", controller: costoProyectController),
 
                   Text('Información del Predio', 
                   textAlign: TextAlign.center,
@@ -273,12 +292,39 @@ class _Form5ScreenState extends State<Form5Screen> {
                     fontSize: responsive.ip(3.3),
                     ),
                   ),
-                  TextFormField1(label: "Nombre:", hintText: "Ingrese el Nombre",),
-                  TextFormField1(label: "Matricula Inmobiliaria ", hintText: "Ingrese  la Inmobilaria",),
-                  TextFormField1(label: "Escritura Publica No:", hintText: "Ingrese  Escriturá Publica",),
-                  TextFormField1(label: "Fecha", hintText: "Ingrese Fecha",),
+                  TextFormField1(label: "Nombre:", hintText: "Ingrese el Nombre", controller: nombrePredController),
+                  TextFormField1(label: "Matricula Inmobiliaria ", hintText: "Ingrese  la Inmobilaria", controller: matriculaPredController),
+                  TextFormField1(label: "Escritura Publica No:", hintText: "Ingrese  Escriturá Publica", controller: escrituraPredController),
+                  TextFormField1(label: "Fecha", hintText: "Ingrese Fecha", controller: fechaPreController),
                   SizedBox(height: responsive.hp(1),),
-                  ElevatedButtons(label: "Enviar", screen: HomeScreen.name), 
+                  ElevatedButton(
+                    onPressed: () async{
+                      await addPlanAprovechamientoForestal("Plan de aprovechamiento forestal" , _tipo, razonSocController.text, cedRucController.text,
+                      representanteController.text, cedRepresentanteController.text, direccionEmpController.text, ciudadController.text,telefonoController.text, emailController.text,
+                      _calidad, _aprovechamiento, especiesController.text, numArbolesController.text, volumController.text, especieAprovController.text, nombreaCieController.text,
+                      costoProyectController.text , nombrePredController.text , matriculaPredController.text , escrituraPredController.text ,
+                      fechaPreController.text, DateTime.now(), ).then((_) {
+                      context.pushReplacement('/reportes');
+                      setState(() {
+                      });
+                      });
+                    },
+                    child: Text("FINALIZAR", style: TextStyle(
+                      color: Colors.white,
+                      fontSize: responsive.ip(1.2),
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(const Color(0xff467302)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(responsive.ip(1))
+                      )),
+                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                        horizontal: responsive.wp(8),
+                        vertical: responsive.hp(0.75)
+                      ))
+                    )
+                  ) 
                 ],
               ),
             ),
