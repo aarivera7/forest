@@ -3,6 +3,10 @@
         android:label="socio_bosques"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!-- API-->
+         <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyCAwL75h1jDPNiA4voDx2ucQFc3faXnVoI"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

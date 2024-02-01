@@ -1,14 +1,18 @@
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
-Future<void> addFormFichaCampo(String nombreForm, String provincia, String canton, String parroquia, String cedula, String hectareas, String? useForestal, DateTime fecha ) async{
+Future<void> addFormFichaCampo(String nombreForm, String provincia, String canton, String parroquia, String cedula, String hectareas, String? useForestal, double latitud,
+double longitud, File? image, DateTime fecha ) async{
   await db.collection("forms").add({"nombreForm": nombreForm, "provincia": provincia, 
   "canton": canton, "parroquia": parroquia, 
   "cedula": cedula, "hectareas": hectareas,
-  "usoForestal": useForestal ,"fecha": fecha});
+  "usoForestal": useForestal , "latitud": latitud,
+   "longitud": longitud, "fecha": fecha,
+   "image": image});
 }
 Future<void> addFormPostulacion(String nombreForm, String razonSo, String representante, String ruc, String ciudad, String direccion, 
 String contacto, String numEmp,String categoria, String productos, String funcionamiento, String mision, String vision, DateTime fecha) async{

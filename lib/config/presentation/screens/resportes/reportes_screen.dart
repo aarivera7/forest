@@ -42,14 +42,17 @@ class _ReportesScreenState extends State<ReportesScreen> {
                       "${fecha.day}/${fecha.month}/${fecha.year} ${fecha.hour}:${fecha.minute.toString().padLeft(2, '0')}:${fecha.second.toString().padLeft(2, '0')}";
                 }
 
-                return Card(
-                  child: ListTile(
-                    leading: Icon(FontAwesomeIcons.file), // Agrega el icono a la izquierda
-                    title: Text(
-                      sortedData[index]['nombreForm'] ?? "",
-                      style: TextStyle(fontSize: responsive.ip(1.5)),
+                return GestureDetector(
+                  onTap: (){},
+                  child: Card(
+                    child: ListTile(
+                      leading: Icon(FontAwesomeIcons.file),
+                      title: Text(
+                        sortedData[index]['nombreForm'] ?? "",
+                        style: TextStyle(fontSize: responsive.ip(1.5)),
+                      ),
+                      subtitle: Text(formattedDateTime),
                     ),
-                    subtitle: Text(formattedDateTime),
                   ),
                 );
               },

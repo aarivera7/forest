@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:socio_bosques/config/presentation/screens/forms/form_1_1_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/forms/form_1_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/forms/form_2_1_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/forms/form_2_2_screen.dart';
@@ -52,11 +51,6 @@ final appRouter = GoRouter(
       builder: (context, state) => const Form1Screen(),
     ),
 
-    GoRoute(
-      path:'/form1_1',
-      name: Form1Screen1.name,
-      builder: (context, state) => const Form1Screen1(),
-    ),
 
     GoRoute(
       path:'/form2',
