@@ -4,17 +4,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
 import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/home/home_screen_admin.dart';
+import 'package:socio_bosques/config/controller/forms/form_1_controller.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_bton_image.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_maps.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_form_field.dart';
 import 'package:socio_bosques/config/responsive.dart';
 import 'package:location/location.dart' as loc;
+
 class Form1Screen extends StatefulWidget {
   static const String name = 'form1'; 
   
@@ -27,27 +28,28 @@ class Form1Screen extends StatefulWidget {
 }
 
 class _Form1ScreenState extends State<Form1Screen> {
-   File? image;
-   late String url;
+  final form1Controller = Form1Controller();
+  File? image;
+  late String url;
+
   Future pickImage() async{
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      
+      if(image == null) return;
+      final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FichaPredios/${DateTime.now()} .png');
 
-  try {
-  final image = await ImagePicker().pickImage(source: ImageSource.camera);
-  
-  if(image == null) return;
-  final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FichaPredios/${DateTime.now()} .png');
+      await firebaseStorageRef.putFile(File(image.path));
 
-  await firebaseStorageRef.putFile(File(image.path));
-
-  final urlImage = await firebaseStorageRef.getDownloadURL();
-  
-  final imageTemporary  = File(image.path);
-  setState(()=>this.image = imageTemporary) ;
-  setState(()=>url = urlImage) ;
-} on PlatformException catch (e) {
-  print('Fallo en la imagen');
-}
-   }
+      final urlImage = await firebaseStorageRef.getDownloadURL();
+      
+      final imageTemporary  = File(image.path);
+      setState(()=>this.image = imageTemporary) ;
+      setState(()=>url = urlImage) ;
+    } on PlatformException catch (e) {
+      print('Fallo en la imagen');
+    }
+  }
   late GoogleMapController mapController;
   LatLng _center = LatLng(0.0, 0.0);
   bool _loading = true;
@@ -65,7 +67,7 @@ class _Form1ScreenState extends State<Form1Screen> {
   }
    
    
-   Future<void> _getCurrentLocation() async {
+  Future<void> _getCurrentLocation() async {
     final location = loc.Location();
     try {
       var currentLocation = await location.getLocation();
@@ -77,13 +79,10 @@ class _Form1ScreenState extends State<Form1Screen> {
       print('Error obteniendo la ubicación: $e');
     }
   }
- String? _useForestal = 'plantacionesProduccion';	
-  TextEditingController provinciaController = TextEditingController(text: "");
-  TextEditingController cantonController = TextEditingController(text: "");
-  TextEditingController parroquiaController = TextEditingController(text: "");
-  TextEditingController cedulaController = TextEditingController(text: "");
-  TextEditingController superficieController = TextEditingController(text: "");
+  String? _useForestal = 'plantacionesProduccion';	
 
+
+  // Se arranca con el formulario 1
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
@@ -116,11 +115,11 @@ class _Form1ScreenState extends State<Form1Screen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextFormField1(label: "Provincia", hintText: "Provincia", controller: provinciaController,),
-                  TextFormField1(label: "Canton", hintText: "Canton", controller: cantonController,),
-                  TextFormField1(label: "Parroquia", hintText: "Parroquia",controller: parroquiaController),
-                  TextFormField1(label: "Cédula", hintText: "Cédula", controller: cedulaController,),
-                  TextFormField1(label: "Superficie en hectareas", hintText: "Superficie en hectareas", controller: superficieController,),
+                  TextFormField1(label: "Provincia", hintText: "Provincia", controller: form1Controller.provinciaController,),
+                  TextFormField1(label: "Canton", hintText: "Canton", controller: form1Controller.cantonController,),
+                  TextFormField1(label: "Parroquia", hintText: "Parroquia",controller: form1Controller.parroquiaController),
+                  TextFormField1(label: "Cédula", hintText: "Cédula", controller: form1Controller.cedulaController,),
+                  TextFormField1(label: "Superficie en hectareas", hintText: "Superficie en hectareas", controller: form1Controller.superficieController,),
                   SizedBox(height: responsive.hp(3),),
                   Text('Uso Forestal', style: TextStyle(fontSize: responsive.ip(2)),),
                   SizedBox(height: responsive.hp(3),),
@@ -208,29 +207,8 @@ class _Form1ScreenState extends State<Form1Screen> {
                   BtonImage(onClick: pickImage,),
                   SizedBox(height: responsive.hp(3)),
                   ElevatedButton(
-                    onPressed: () async{
-                      await addFormFichaCampo("Ficha de campo para evalución de predios" ,provinciaController.text, cantonController.text,
-                      parroquiaController.text, cedulaController.text, superficieController.text, _useForestal, _center.latitude,_center.longitude, url, DateTime.now()).then((_) {
-                      User? user = FirebaseAuth.instance.currentUser;
-                        var kk = FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(user!.uid)
-                                .get()
-                                .then((DocumentSnapshot documentSnapshot) {
-                                  if (documentSnapshot.exists) {
-                            if (documentSnapshot.get('rool') == true) {
-                              context.pushReplacementNamed(HomeScreenAdmin.name);
-                            }else{
-                              context.pushReplacementNamed(HomeScreenUser.name);
-                            }
-                          } else {
-                            print('Document does not exist on the database');
-                          }
-                        });;
-                      setState(() {
-                      });
-                      });
-                    },
+                    // Se pasa al controlador para subir los datos
+                    onPressed: () => form1Controller.subirDatos(context, url, _useForestal, _center),
                     child: Text("FINALIZAR", style: TextStyle(
                       color: Colors.white,
                       fontSize: responsive.ip(1.2),

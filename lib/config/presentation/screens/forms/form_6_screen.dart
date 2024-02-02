@@ -5,7 +5,7 @@ import 'package:location/location.dart' as loc;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
+import 'package:socio_bosques/config/controller/forms/form_6_controller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
@@ -24,27 +24,28 @@ class Form6Screen extends StatefulWidget {
 }
 
 class _Form6ScreenState extends State<Form6Screen> {
+  final form6Controller = Form6Controller();
    File? image;
    late String url;
   Future pickImage() async{
 
-  try {
-  final image = await ImagePicker().pickImage(source: ImageSource.camera);
-  
-  if(image == null) return;
-  final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/ActaRetencion/${DateTime.now()} .png');
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      
+      if(image == null) return;
+      final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FichaPredios/${DateTime.now()} .png');
 
-  await firebaseStorageRef.putFile(File(image.path));
+      await firebaseStorageRef.putFile(File(image.path));
 
-  final urlImage = await firebaseStorageRef.getDownloadURL();
-  
-  final imageTemporary  = File(image.path);
-  setState(()=>this.image = imageTemporary) ;
-  setState(()=>url = urlImage) ;
-} on PlatformException catch (e) {
-  print('Fallo en la imagen');
-}
-   }
+      final urlImage = await firebaseStorageRef.getDownloadURL();
+      
+      final imageTemporary  = File(image.path);
+      setState(()=>this.image = imageTemporary) ;
+      setState(()=>url = urlImage) ;
+    } on PlatformException catch (e) {
+      print('Fallo en la imagen');
+    }
+  }
   late GoogleMapController mapController;
   LatLng _center = LatLng(0.0, 0.0);
   bool _loading = true;
@@ -76,21 +77,6 @@ class _Form6ScreenState extends State<Form6Screen> {
   }
   String? _acta = 'retencion';
   String? _accion = 'faltaEtiqueta';
-  TextEditingController nombreEmprProdController = TextEditingController(text: "");
-  TextEditingController cantidadController = TextEditingController(text: "");
-  TextEditingController presentacionController = TextEditingController(text: "");
-  TextEditingController registroController = TextEditingController(text: "");
-  TextEditingController numLoteEmpController = TextEditingController(text: "");
-  TextEditingController fechaController = TextEditingController(text: "");
-  TextEditingController produccionController = TextEditingController(text: "");
-  TextEditingController vencimientoController = TextEditingController(text: "");
-  TextEditingController nombreLicEmpresaController = TextEditingController(text: "");
-  TextEditingController nombreLicDecomisaController = TextEditingController(text: "");
-  TextEditingController notificadoEmpresaController = TextEditingController(text: "");
-  TextEditingController observacionController = TextEditingController(text: "");
-  TextEditingController nombreController = TextEditingController(text: "");
-  TextEditingController cedulaController = TextEditingController(text: "");
-  TextEditingController cargoPredController = TextEditingController(text: "");
 
 
   @override
@@ -149,16 +135,16 @@ class _Form6ScreenState extends State<Form6Screen> {
                       });
                     },
                   ),
-                  TextFormField1(label: "Nombre de Producto: ", hintText: "Ingrese nombre del Producto", controller: nombreEmprProdController),
-                  TextFormField1(label: "Cantidad:", hintText: "Ingrese la Cantidad ", controller: cantidadController),
-                  TextFormField1(label: "Presentación: ", hintText: "Ingrese la Presentación", controller: presentacionController),
-                  TextFormField1(label: "Registro: ", hintText: "Ingrese el Registro", controller: registroController),
-                  TextFormField1(label: "N°: Lote: ", hintText: "Ingrese el N° de Lote", controller: numLoteEmpController),
-                  TextFormField1(label: "Fecha:", hintText: "Ingrese la Fecha", controller: fechaController),
-                  TextFormField1(label: "Producción:", hintText: "Ingrese  la Producción", controller: produccionController),
-                  TextFormField1(label: "Fecha de Vencimiento:", hintText: "Ingrese la Fecha de Vencimiento", controller: vencimientoController),
-                  TextFormField1(label: "Nombre y Lic De la Empresa:", hintText: "Ingrese el Nombre De La Empresa", controller: nombreLicEmpresaController),
-                  TextFormField1(label: "Nombre  y Lic  Retiene o Decomisa:", hintText: "Ingrese el Nombre Del Que Retiene", controller: nombreLicDecomisaController),
+                  TextFormField1(label: "Nombre de Producto: ", hintText: "Ingrese nombre del Producto", controller:  form6Controller.nombreEmprProdController),
+                  TextFormField1(label: "Cantidad:", hintText: "Ingrese la Cantidad ", controller:  form6Controller.cantidadController),
+                  TextFormField1(label: "Presentación: ", hintText: "Ingrese la Presentación", controller:  form6Controller.presentacionController),
+                  TextFormField1(label: "Registro: ", hintText: "Ingrese el Registro", controller:  form6Controller.registroController),
+                  TextFormField1(label: "N°: Lote: ", hintText: "Ingrese el N° de Lote", controller:  form6Controller.numLoteEmpController),
+                  TextFormField1(label: "Fecha:", hintText: "Ingrese la Fecha", controller:  form6Controller.fechaController),
+                  TextFormField1(label: "Producción:", hintText: "Ingrese  la Producción", controller:  form6Controller.produccionController),
+                  TextFormField1(label: "Fecha de Vencimiento:", hintText: "Ingrese la Fecha de Vencimiento", controller:  form6Controller.vencimientoController),
+                  TextFormField1(label: "Nombre y Lic De la Empresa:", hintText: "Ingrese el Nombre De La Empresa", controller:  form6Controller.nombreLicEmpresaController),
+                  TextFormField1(label: "Nombre  y Lic  Retiene o Decomisa:", hintText: "Ingrese el Nombre Del Que Retiene", controller:  form6Controller.nombreLicDecomisaController),
 
                   SizedBox(height: responsive.hp(1),),
                   Text("Motivo de acción: ", 
@@ -228,11 +214,11 @@ class _Form6ScreenState extends State<Form6Screen> {
                     },
                   ),
 
-                  TextFormField1(label: "Notificado por la empresa: ", hintText: "Ingrese Notificado Por La Empresa", controller: notificadoEmpresaController),
-                  TextFormField1(label: "Observación: ", hintText: "Ingrese la Observación", controller: observacionController),
-                  TextFormField1(label: "Nombre: ", hintText: "Ingrese el Nombre", controller: nombreController),
-                  TextFormField1(label: "Cédula: ", hintText: "Ingrese la Cédula", controller: cedulaController,),
-                  TextFormField1(label: "Cargo: ", hintText: "Ingrese el Cargo", controller: cargoPredController,),
+                  TextFormField1(label: "Notificado por la empresa: ", hintText: "Ingrese Notificado Por La Empresa", controller:  form6Controller.notificadoEmpresaController),
+                  TextFormField1(label: "Observación: ", hintText: "Ingrese la Observación", controller:  form6Controller.observacionController),
+                  TextFormField1(label: "Nombre: ", hintText: "Ingrese el Nombre", controller:  form6Controller.nombreController),
+                  TextFormField1(label: "Cédula: ", hintText: "Ingrese la Cédula", controller:  form6Controller.cedulaController,),
+                  TextFormField1(label: "Cargo: ", hintText: "Ingrese el Cargo", controller:  form6Controller.cargoPredController,),
 
                    SizedBox(height: responsive.hp(2),),
                   Text('Ubicación',style: TextStyle(fontSize: responsive.ip(2))),
@@ -267,32 +253,7 @@ class _Form6ScreenState extends State<Form6Screen> {
                   BtonImage(onClick: pickImage,),
                   SizedBox(height: responsive.hp(3)),
                    ElevatedButton(
-                    onPressed: () async{
-                      await addPActaRetencionProductos("Acta de retención de productos forestales y vida silvestre", _acta,nombreEmprProdController.text, cantidadController.text,
-                      presentacionController.text, registroController.text, numLoteEmpController.text, fechaController.text,produccionController.text, vencimientoController.text,
-                      nombreLicEmpresaController.text, nombreLicDecomisaController.text, _accion,notificadoEmpresaController.text, observacionController.text, nombreController.text,
-                      cedulaController.text , cargoPredController.text,  _center.latitude, _center.longitude, url, DateTime.now()).then((_) {
-                      //context.pushReplacement('/reportes');
-                       User? user = FirebaseAuth.instance.currentUser;
-                        var kk = FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(user!.uid)
-                                .get()
-                                .then((DocumentSnapshot documentSnapshot) {
-                                  if (documentSnapshot.exists) {
-                            if (documentSnapshot.get('rool') == true) {
-                              context.pushReplacementNamed(HomeScreenAdmin.name);
-                            }else{
-                              context.pushReplacementNamed(HomeScreenUser.name);
-                            }
-                          } else {
-                            print('Document does not exist on the database');
-                          }
-                        });;
-                      setState(() {
-                      });
-                      });
-                    },
+                    onPressed: () => form6Controller.subirDatos(context, _acta, _accion, _center, url),
                     child: Text("FINALIZAR", style: TextStyle(
                       color: Colors.white,
                       fontSize: responsive.ip(1.2),

@@ -1,8 +1,8 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_auth/firebase_auth_services.dart';
+import 'package:socio_bosques/config/controller/auth/login_controller.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/signup_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/home/home_screen_admin.dart';
@@ -20,6 +20,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // Arraca la vista de inicio de sesion
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
@@ -58,16 +59,12 @@ class _LoginForm extends StatefulWidget {
   State<_LoginForm> createState() => _LoginFormState();
 }
 
-  final FirebaseAuthService _auth = FirebaseAuthService();
 class _LoginFormState extends State<_LoginForm> {
-
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-
+  LoginController loginController = LoginController();
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
+    loginController.emailController.dispose();
+    loginController.passwordController.dispose();
     super.dispose();
   }
   
@@ -80,7 +77,7 @@ class _LoginFormState extends State<_LoginForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
            LoginTextFormField(
-            controller: _emailController,
+            controller: loginController.emailController,
             label: "Ingresa tu Correo electrónico", 
             icon: Icons.email_rounded, 
             isPassword: false,
@@ -88,7 +85,7 @@ class _LoginFormState extends State<_LoginForm> {
           ),
           SizedBox(height: responsive.hp(2),),
            LoginTextFormField(
-            controller: _passwordController,
+            controller: loginController.passwordController,
             label: "Ingresa tu Contraseña", 
             icon: Icons.lock_rounded, 
             isPassword: true,
@@ -96,8 +93,10 @@ class _LoginFormState extends State<_LoginForm> {
             title: "Contraseña",
           ),
           SizedBox(height: responsive.hp(3),),
+
+          // Aqui se llama al metodo login del controlador
           ElevatedButton(
-            onPressed: _Login,
+            onPressed: () => loginController.login(context),
             child: Text('INGRESAR', style: TextStyle(
               color: Colors.white,
               fontSize: responsive.ip(1.2),
@@ -118,33 +117,5 @@ class _LoginFormState extends State<_LoginForm> {
       )
     );
   }
-  void _Login ()async{
- 
-  String email = _emailController.text;
-  String password = _passwordController.text;
-  User? user =await _auth.signInwithEmailAndPassword(email, password);
-
-  if(user != null){
-    User? user = FirebaseAuth.instance.currentUser;
-    var kk = FirebaseFirestore.instance
-            .collection('users')
-            .doc(user!.uid)
-            .get()
-            .then((DocumentSnapshot documentSnapshot) {
-              if (documentSnapshot.exists) {
-        if (documentSnapshot.get('rool') == true) {
-           context.pushReplacementNamed(HomeScreenAdmin.name);
-        }else{
-          context.pushReplacementNamed(HomeScreenUser.name);
-        }
-      } else {
-        print('Document does not exist on the database');
-      }
-    });
-  }else{
-    print('error al logear usuario');
-  }
-
-}
 }
 

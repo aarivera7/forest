@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart'; // Importa FontAwesomeIcons
+import 'package:font_awesome_flutter/font_awesome_flutter.dart'; 
 import 'package:socio_bosques/config/presentation/prov/evalucion_predios.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_get.dart';
 import 'package:socio_bosques/config/responsive.dart';
@@ -127,7 +127,7 @@ class _ReportesScreenState extends State<ReportesScreen> {
       'rfc': sortedData[index]['rfcTec'],
       'latitud': sortedData[index]['latitud'].toString(),
       'longitud': sortedData[index]['longitud'].toString(),
-      'Imagen': sortedData[index]['image']
+      'Imagen': sortedData[index]['url']
       };
   }
    Map<String, String> dataTableForm3(BuildContext context, List<dynamic> sortedData, index, fecha ){
@@ -152,7 +152,7 @@ class _ReportesScreenState extends State<ReportesScreen> {
       'Mantenimiento': sortedData[index]['mantenimiento'],
       'latitud': sortedData[index]['latitud'].toString(),
       'longitud': sortedData[index]['longitud'].toString(),
-      'Imagen': sortedData[index]['image']
+      'Imagen': sortedData[index]['url']
       };
   }
    Map<String, String> dataTableForm4(BuildContext context, List<dynamic> sortedData, index, fecha ){
@@ -172,7 +172,7 @@ class _ReportesScreenState extends State<ReportesScreen> {
       'Vision': sortedData[index]['vision'],
       'latitud': sortedData[index]['latitud'].toString(),
       'longitud': sortedData[index]['longitud'].toString(),
-      'Imagen': sortedData[index]['image']
+      'Imagen': sortedData[index]['url']
       };
   }
    Map<String, String> dataTableForm5(BuildContext context, List<dynamic> sortedData, index, fecha ){
@@ -185,8 +185,8 @@ class _ReportesScreenState extends State<ReportesScreen> {
       'Cedula Representante Legal': sortedData[index]['cedRepresentate'],
       'Dirección': sortedData[index]['direccion'],
       'Ciudad': sortedData[index]['ciudad'],
-      'Teléfono': sortedData[index]['email'],
-      'E-mail': sortedData[index]['correoProp'],
+      'Teléfono': sortedData[index]['telefono'],
+      'E-mail': sortedData[index]['email'],
       'Calidad en que actúa como:': sortedData[index]['calidad'],
       'Apartado: ': 'INFORMACIÓN GENERAL',
       'Tipo de Aprovechamiento:': sortedData[index]['tipoAprovechamiento'],
@@ -200,13 +200,13 @@ class _ReportesScreenState extends State<ReportesScreen> {
       'Escritura Publica No:': sortedData[index]['escrituraPred'],
       'latitud': sortedData[index]['latitud'].toString(),
       'longitud': sortedData[index]['longitud'].toString(),
-      'Imagen': sortedData[index]['image']
+      'Imagen': sortedData[index]['url']
       };
   }
    Map<String, String> dataTableForm6(BuildContext context, List<dynamic> sortedData, index, fecha ){
     return{
       'Fecha':sortedData[index]['fecha'].toString().split(' ')[0], 
-      'Acta de:':sortedData[index]['retencion'],
+      'Acta de:':sortedData[index]['acta'],
       'Cédula': sortedData[index]['cedula'],
       'Cantidad:': sortedData[index]['cantidad'],
       'Presentación:': sortedData[index]['presentacion'],
@@ -222,7 +222,7 @@ class _ReportesScreenState extends State<ReportesScreen> {
       'Cargo': sortedData[index]['cargo'],
       'latitud': sortedData[index]['latitud'].toString(),
       'longitud': sortedData[index]['longitud'].toString(),
-      'Imagen': sortedData[index]['image']
+      'Imagen': sortedData[index]['url']
       };
   }
 }

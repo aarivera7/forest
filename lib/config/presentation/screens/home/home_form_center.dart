@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:socio_bosques/config/controller/home/home_form_center_controller.dart';
 import 'package:socio_bosques/config/presentation/menu/form_center_card.dart';
 import 'package:socio_bosques/config/responsive.dart';
 
@@ -7,6 +8,7 @@ class FormCenterScreen extends StatelessWidget {
   static const String name = 'form_center_screen';
   const FormCenterScreen({super.key});
 
+  // Arranca la vista de registro
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
@@ -58,6 +60,8 @@ class _FormCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
+    final HomeFormCenterController homeFormCenterController =
+    HomeFormCenterController();
 
     return Column(
       children: [
@@ -106,6 +110,7 @@ class _FormCard extends StatelessWidget {
                     );
                   }).toList();
                 },
+                // 
                 onSelected: (String selectedOption) {
                   
                   print("Seleccionaste: $selectedOption");
@@ -115,13 +120,13 @@ class _FormCard extends StatelessWidget {
                     case 'Ficha de campo para evaluación de predios':
                     case 'Formulario de Monitoreo Ambiental':
                     case 'Plan de aprovechamiento forestal':
-                      context.push(routes[0]);
+                      homeFormCenterController.seleccion(context, routes[0]);
                       break;
                     
                     case 'Ficha para registro de víveros':
                     case 'Formulario de Postulación':
                     case 'Acta de retención de productos forestales y vida silvestre':
-                      context.push(routes[1]);
+                      homeFormCenterController.seleccion(context, routes[1]);
                       break;
             
                   }

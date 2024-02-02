@@ -5,12 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
 import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/home/home_screen_admin.dart';
+import 'package:socio_bosques/config/controller/forms/form_3_controller.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_bton_image.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_form_field.dart';
 import 'package:socio_bosques/config/responsive.dart';
@@ -26,26 +26,27 @@ class Form3Screen extends StatefulWidget {
 
 class _Form3ScreenState extends State<Form3Screen> {
   File? image;
-   late String url;
+  late String url;
+  final form3Controller = Form3Controller();
+
   Future pickImage() async{
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      
+      if(image == null) return;
+      final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FichaPredios/${DateTime.now()} .png');
 
-  try {
-  final image = await ImagePicker().pickImage(source: ImageSource.camera);
-  
-  if(image == null) return;
-  final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FormMonitoreAmb/${DateTime.now()} .png');
+      await firebaseStorageRef.putFile(File(image.path));
 
-  await firebaseStorageRef.putFile(File(image.path));
-
-  final urlImage = await firebaseStorageRef.getDownloadURL();
-  
-  final imageTemporary  = File(image.path);
-  setState(()=>this.image = imageTemporary) ;
-  setState(()=>url = urlImage) ;
-} on PlatformException catch (e) {
-  print('Fallo en la imagen');
-}
-   }
+      final urlImage = await firebaseStorageRef.getDownloadURL();
+      
+      final imageTemporary  = File(image.path);
+      setState(()=>this.image = imageTemporary) ;
+      setState(()=>url = urlImage) ;
+    } on PlatformException catch (e) {
+      print('Fallo en la imagen');
+    }
+  }
   late GoogleMapController mapController;
   LatLng _center = LatLng(0.0, 0.0);
   bool _loading = true;
@@ -76,22 +77,6 @@ class _Form3ScreenState extends State<Form3Screen> {
     }
   }
   String? _letter = 'yes';
-  TextEditingController fechaController = TextEditingController(text: "");
-  TextEditingController areaController = TextEditingController(text: "");
-  TextEditingController tipoDisController = TextEditingController(text: "");
-  TextEditingController propietarioController = TextEditingController(text: "");
-  TextEditingController telefonoController = TextEditingController(text: "");
-  TextEditingController nombreParcController = TextEditingController(text: "");
-  TextEditingController fechaMoniController = TextEditingController(text: "");
-  TextEditingController superfMonController = TextEditingController(text: "");
-  TextEditingController numeroArController = TextEditingController(text: "");
-  TextEditingController especieController = TextEditingController(text: "");
-  TextEditingController alturaController = TextEditingController(text: "");
-  TextEditingController diametroController = TextEditingController(text: "");
-  TextEditingController diametroEController = TextEditingController(text: "");
-  TextEditingController diametroNController = TextEditingController(text: "");
-  TextEditingController estadoFitoController = TextEditingController(text: "");
-  TextEditingController mantenimientoController = TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
@@ -123,11 +108,11 @@ class _Form3ScreenState extends State<Form3Screen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextFormField1(label: "Fecha", hintText: "Ingrese la fecha", controller:fechaController ,),
-                  TextFormField1(label: "Área", hintText: "Ingrese el Área", controller: areaController,),
-                  TextFormField1(label: "Tipo y diseño", hintText: "Ingrese el tipo o diseño", controller: tipoDisController,),
-                  TextFormField1(label: "Propetario", hintText: "Ingrese el propietario", controller: propietarioController,),
-                  TextFormField1(label: "Teléfono del propetario", hintText: "Ingrese numero de teléfono", controller: telefonoController,),
+                  TextFormField1(label: "Fecha", hintText: "Ingrese la fecha", controller: form3Controller.fechaController ,),
+                  TextFormField1(label: "Área", hintText: "Ingrese el Área", controller: form3Controller.areaController,),
+                  TextFormField1(label: "Tipo y diseño", hintText: "Ingrese el tipo o diseño", controller: form3Controller.tipoDisController,),
+                  TextFormField1(label: "Propetario", hintText: "Ingrese el propietario", controller: form3Controller.propietarioController,),
+                  TextFormField1(label: "Teléfono del propetario", hintText: "Ingrese numero de teléfono", controller: form3Controller.telefonoController,),
                   Text("Carta de compromiso", 
                         style: TextStyle(
                           color: Colors.black,
@@ -174,9 +159,9 @@ class _Form3ScreenState extends State<Form3Screen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextFormField1(label: "Nombre de parcela", hintText: "Ingrese Nombre de la Parcela", controller: nombreParcController,),
-                TextFormField1(label: "Fecha de monitoreo", hintText: "Ingrese fecha de monitoreo", controller:fechaMoniController ,),
-                TextFormField1(label: "Superficie monitoreada", hintText: "Ingrese la superficie", controller: superfMonController,),
+                TextFormField1(label: "Nombre de parcela", hintText: "Ingrese Nombre de la Parcela", controller: form3Controller.nombreParcController,),
+                TextFormField1(label: "Fecha de monitoreo", hintText: "Ingrese fecha de monitoreo", controller: form3Controller.fechaMoniController ,),
+                TextFormField1(label: "Superficie monitoreada", hintText: "Ingrese la superficie", controller: form3Controller.superfMonController,),
                 SizedBox(height: responsive.hp(1),),
               ],
             ),
@@ -200,14 +185,14 @@ class _Form3ScreenState extends State<Form3Screen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextFormField1(label: "Numero de árbol", hintText: "Ingrese N° de Árbol ", controller:numeroArController ,),
-                  TextFormField1(label: "Especie", hintText: "Ingrese la Especie", controller:especieController ,),
-                  TextFormField1(label: "Altura", hintText: "Ingrese la Altura", controller: alturaController,),
-                  TextFormField1(label: "Diámetro", hintText: "Ingrese la Diámetro", controller: diametroController,),
-                  TextFormField1(label: "Diametro de copa en E", hintText: "Ingrese la Diametro de copa", controller:diametroEController ,),
-                  TextFormField1(label: "Diametro de copa en N", hintText: "Ingrese la Diametro de Copa N", controller:diametroNController ,),
-                  TextFormField1(label: "Estado fitosanitario", hintText: "Ingrese Estado de fitosanitario", controller: estadoFitoController,),
-                  TextFormField1(label: "Mantenimiento", hintText: "Ingrese el Mantenimiento", controller: mantenimientoController,),
+                  TextFormField1(label: "Numero de árbol", hintText: "Ingrese N° de Árbol ", controller: form3Controller.numeroArController ,),
+                  TextFormField1(label: "Especie", hintText: "Ingrese la Especie", controller: form3Controller.especieController ,),
+                  TextFormField1(label: "Altura", hintText: "Ingrese la Altura", controller: form3Controller.alturaController,),
+                  TextFormField1(label: "Diámetro", hintText: "Ingrese la Diámetro", controller: form3Controller.diametroController,),
+                  TextFormField1(label: "Diametro de copa en E", hintText: "Ingrese la Diametro de copa", controller: form3Controller.diametroEController ,),
+                  TextFormField1(label: "Diametro de copa en N", hintText: "Ingrese la Diametro de Copa N", controller: form3Controller.diametroNController ,),
+                  TextFormField1(label: "Estado fitosanitario", hintText: "Ingrese Estado de fitosanitario", controller: form3Controller.estadoFitoController,),
+                  TextFormField1(label: "Mantenimiento", hintText: "Ingrese el Mantenimiento", controller: form3Controller.mantenimientoController,),
                   SizedBox(height: responsive.hp(1),), 
 
                 ],
@@ -249,31 +234,7 @@ class _Form3ScreenState extends State<Form3Screen> {
                   BtonImage(onClick: pickImage,),
                   SizedBox(height: responsive.hp(3)),
             ElevatedButton(
-                    onPressed: () async{
-                      await addFormMonAmbiental("Formulario de Monitoreo Ambiental" ,fechaController.text, areaController.text,
-                      tipoDisController.text, propietarioController.text, telefonoController.text, _letter, nombreParcController.text,fechaMoniController.text, superfMonController.text,
-                       numeroArController.text, especieController.text,alturaController.text,diametroController.text,diametroEController.text,diametroNController.text, 
-                       estadoFitoController.text, mantenimientoController.text, _center.latitude, _center.longitude, url,DateTime.now()).then((_) {
-                      User? user = FirebaseAuth.instance.currentUser;
-                        var kk = FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(user!.uid)
-                                .get()
-                                .then((DocumentSnapshot documentSnapshot) {
-                                  if (documentSnapshot.exists) {
-                            if (documentSnapshot.get('rool') == true) {
-                              context.pushReplacementNamed(HomeScreenAdmin.name);
-                            }else{
-                              context.pushReplacementNamed(HomeScreenUser.name);
-                            }
-                          } else {
-                            print('Document does not exist on the database');
-                          }
-                        });;
-                      setState(() {
-                      });
-                      });
-                    },
+                    onPressed: () => form3Controller.subirDatos(context, _letter, _center, url),
                     child: Text("FINALIZAR", style: TextStyle(
                       color: Colors.white,
                       fontSize: responsive.ip(1.2),

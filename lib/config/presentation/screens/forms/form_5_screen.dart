@@ -5,8 +5,8 @@ import 'package:location/location.dart' as loc;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:socio_bosques/config/controller/forms/form_5_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
 import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart';
@@ -29,8 +29,9 @@ class Form5Screen extends StatefulWidget {
 }
 
 class _Form5ScreenState extends State<Form5Screen> {
+  final form5Controller = Form5Controller();
   File? image;
-   late String url;
+  late String url;
   Future pickImage() async{
 
   try {
@@ -82,24 +83,6 @@ class _Form5ScreenState extends State<Form5Screen> {
   String? _tipo = 'natural';
   String? _calidad = 'propietario';
   String? _aprovechamiento = 'domestica';
-  TextEditingController razonSocController = TextEditingController(text: "");
-  TextEditingController cedRucController = TextEditingController(text: "");
-  TextEditingController representanteController = TextEditingController(text: "");
-  TextEditingController cedRepresentanteController = TextEditingController(text: "");
-  TextEditingController direccionEmpController = TextEditingController(text: "");
-  TextEditingController ciudadController = TextEditingController(text: "");
-  TextEditingController telefonoController = TextEditingController(text: "");
-  TextEditingController emailController = TextEditingController(text: "");
-  TextEditingController especiesController = TextEditingController(text: "");
-  TextEditingController numArbolesController = TextEditingController(text: "");
-  TextEditingController volumController = TextEditingController(text: "");
-  TextEditingController especieAprovController = TextEditingController(text: "");
-  TextEditingController nombreaCieController = TextEditingController(text: "");
-  TextEditingController costoProyectController = TextEditingController(text: "");
-  TextEditingController nombrePredController = TextEditingController(text: "");
-  TextEditingController matriculaPredController = TextEditingController(text: "");
-  TextEditingController escrituraPredController = TextEditingController(text: "");
-  TextEditingController fechaPreController = TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
@@ -178,14 +161,14 @@ class _Form5ScreenState extends State<Form5Screen> {
                       });
                     },
                   ),
-                  TextFormField1(label: "Nombre o Razon Social:", hintText: "Ingrese Razon Social", controller: razonSocController,),
-                  TextFormField1(label: "Cédula/RUC: ", hintText: "Ingrese la cédula o RUC", controller: cedRucController),
-                  TextFormField1(label: "Representante Legal:", hintText: "Ingrese el nombre del Representante Legal",controller: representanteController),
-                  TextFormField1(label: "Cédula del Representante Legal", hintText: "Ingrese la cedula del Representante Legal", controller: cedRepresentanteController),
-                  TextFormField1(label: "Dirección:", hintText: "Ingrese la Dirección", controller: direccionEmpController),
-                  TextFormField1(label: "Cuidad: ", hintText: "Ingrese la Cuidad", controller: ciudadController),
-                  TextFormField1(label: "Teléfono:", hintText: "Ingrese el Teléfono", controller: telefonoController),
-                  TextFormField1(label: "E-mail", hintText: "Ingrese el E-mail", controller: emailController),
+                  TextFormField1(label: "Nombre o Razon Social:", hintText: "Ingrese Razon Social", controller: form5Controller.razonSocController,),
+                  TextFormField1(label: "Cédula/RUC: ", hintText: "Ingrese la cédula o RUC", controller: form5Controller.cedRucController),
+                  TextFormField1(label: "Representante Legal:", hintText: "Ingrese el nombre del Representante Legal",controller: form5Controller.representanteController),
+                  TextFormField1(label: "Cédula del Representante Legal", hintText: "Ingrese la cedula del Representante Legal", controller: form5Controller.cedRepresentanteController),
+                  TextFormField1(label: "Dirección:", hintText: "Ingrese la Dirección", controller: form5Controller.direccionEmpController),
+                  TextFormField1(label: "Cuidad: ", hintText: "Ingrese la Cuidad", controller: form5Controller.ciudadController),
+                  TextFormField1(label: "Teléfono:", hintText: "Ingrese el Teléfono", controller: form5Controller.telefonoController),
+                  TextFormField1(label: "E-mail", hintText: "Ingrese el E-mail", controller: form5Controller.emailController),
 
                   Text("Calidad en que actúa: ", 
                         style: TextStyle(
@@ -339,12 +322,12 @@ class _Form5ScreenState extends State<Form5Screen> {
                     },
                   ),
 
-                  TextFormField1(label: "Especies", hintText: "Ingrese las Especies", controller: especiesController),
-                  TextFormField1(label: "No. Arboles", hintText: "Ingrese N°", controller: numArbolesController),
-                  TextFormField1(label: "Volumen:", hintText: "Ingrese la Volumen", controller: volumController),
-                  TextFormField1(label: "Especie a Aprovechar(Nombre Común)", hintText: "Ingrese Nombre Común", controller: especieAprovController),
-                  TextFormField1(label: "Nombre Cientifico", hintText: "Ingrese el Nombre Cientifico", controller: nombreaCieController),
-                  TextFormField1(label: "Costo del Proyecto ", hintText: "Ingrese Costo del Proyecto", controller: costoProyectController),
+                  TextFormField1(label: "Especies", hintText: "Ingrese las Especies", controller: form5Controller.especiesController),
+                  TextFormField1(label: "No. Arboles", hintText: "Ingrese N°", controller: form5Controller.numArbolesController),
+                  TextFormField1(label: "Volumen:", hintText: "Ingrese la Volumen", controller: form5Controller.volumController),
+                  TextFormField1(label: "Especie a Aprovechar(Nombre Común)", hintText: "Ingrese Nombre Común", controller: form5Controller.especieAprovController),
+                  TextFormField1(label: "Nombre Cientifico", hintText: "Ingrese el Nombre Cientifico", controller: form5Controller.nombreaCieController),
+                  TextFormField1(label: "Costo del Proyecto ", hintText: "Ingrese Costo del Proyecto", controller: form5Controller.costoProyectController),
 
                   Text('Información del Predio', 
                   textAlign: TextAlign.center,
@@ -353,10 +336,10 @@ class _Form5ScreenState extends State<Form5Screen> {
                     fontSize: responsive.ip(3.3),
                     ),
                   ),
-                  TextFormField1(label: "Nombre:", hintText: "Ingrese el Nombre", controller: nombrePredController),
-                  TextFormField1(label: "Matricula Inmobiliaria ", hintText: "Ingrese  la Inmobilaria", controller: matriculaPredController),
-                  TextFormField1(label: "Escritura Publica No:", hintText: "Ingrese  Escriturá Publica", controller: escrituraPredController),
-                  TextFormField1(label: "Fecha", hintText: "Ingrese Fecha", controller: fechaPreController),
+                  TextFormField1(label: "Nombre:", hintText: "Ingrese el Nombre", controller: form5Controller.nombrePredController),
+                  TextFormField1(label: "Matricula Inmobiliaria ", hintText: "Ingrese  la Inmobilaria", controller: form5Controller.matriculaPredController),
+                  TextFormField1(label: "Escritura Publica No:", hintText: "Ingrese  Escriturá Publica", controller: form5Controller.escrituraPredController),
+                  TextFormField1(label: "Fecha", hintText: "Ingrese Fecha", controller: form5Controller.fechaPreController),
                    SizedBox(height: responsive.hp(2),),
                   Text('Ubicación',style: TextStyle(fontSize: responsive.ip(2))),
                   SizedBox(height: responsive.hp(2),),
@@ -390,32 +373,7 @@ class _Form5ScreenState extends State<Form5Screen> {
                   BtonImage(onClick: pickImage,),
                   SizedBox(height: responsive.hp(3)),
                   ElevatedButton(
-                    onPressed: () async{
-                      await addPlanAprovechamientoForestal("Plan de aprovechamiento forestal" , _tipo, razonSocController.text, cedRucController.text,
-                      representanteController.text, cedRepresentanteController.text, direccionEmpController.text, ciudadController.text,telefonoController.text, emailController.text,
-                      _calidad, _aprovechamiento, especiesController.text, numArbolesController.text, volumController.text, especieAprovController.text, nombreaCieController.text,
-                      costoProyectController.text , nombrePredController.text , matriculaPredController.text , escrituraPredController.text ,
-                      fechaPreController.text, _center.latitude, _center.longitude, url,DateTime.now(), ).then((_) {
-                     User? user = FirebaseAuth.instance.currentUser;
-                        var kk = FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(user!.uid)
-                                .get()
-                                .then((DocumentSnapshot documentSnapshot) {
-                                  if (documentSnapshot.exists) {
-                            if (documentSnapshot.get('rool') == true) {
-                              context.pushReplacementNamed(HomeScreenAdmin.name);
-                            }else{
-                              context.pushReplacementNamed(HomeScreenUser.name);
-                            }
-                          } else {
-                            print('Document does not exist on the database');
-                          }
-                        });;
-                      setState(() {
-                      });
-                      });
-                    },
+                    onPressed:  () => form5Controller.subirDatos(context, _tipo, _calidad, _aprovechamiento, _center, url),
                     child: Text("FINALIZAR", style: TextStyle(
                       color: Colors.white,
                       fontSize: responsive.ip(1.2),

@@ -5,12 +5,9 @@ import 'package:location/location.dart' as loc;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
-import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart';
-import 'package:socio_bosques/config/presentation/screens/home/home_screen_admin.dart';
+import 'package:socio_bosques/config/controller/forms/form_2_controller.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_bton_image.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_form_field.dart';
 import 'package:socio_bosques/config/responsive.dart';
@@ -22,31 +19,33 @@ class Form2Screen extends StatefulWidget {
   const Form2Screen({super.key});
 
   @override
-  State<Form2Screen> createState() => _Form3ScreenState();
+  State<Form2Screen> createState() => _Form2ScreenState();
 }
 
-class _Form3ScreenState extends State<Form2Screen> {
+class _Form2ScreenState extends State<Form2Screen> {
   File? image;
-   late String url;
+  late String url;
+  final form2Controller = Form2Controller();
+
   Future pickImage() async{
 
   try {
-  final image = await ImagePicker().pickImage(source: ImageSource.camera);
-  
-  if(image == null) return;
-  final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FichaRegistroVi/${DateTime.now()} .png');
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      
+      if(image == null) return;
+      final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FichaPredios/${DateTime.now()} .png');
 
-  await firebaseStorageRef.putFile(File(image.path));
+      await firebaseStorageRef.putFile(File(image.path));
 
-  final urlImage = await firebaseStorageRef.getDownloadURL();
-  
-  final imageTemporary  = File(image.path);
-  setState(()=>this.image = imageTemporary) ;
-  setState(()=>url = urlImage) ;
-} on PlatformException catch (e) {
-  print('Fallo en la imagen');
-}
-   }
+      final urlImage = await firebaseStorageRef.getDownloadURL();
+      
+      final imageTemporary  = File(image.path);
+      setState(()=>this.image = imageTemporary) ;
+      setState(()=>url = urlImage) ;
+    } on PlatformException catch (e) {
+      print('Fallo en la imagen');
+    }
+  }
   late GoogleMapController mapController;
   LatLng _center = LatLng(0.0, 0.0);
   bool _loading = true;
@@ -59,7 +58,6 @@ class _Form3ScreenState extends State<Form2Screen> {
   
 
   void _onMapCreated(GoogleMapController controller) {
-   
     mapController = controller;
   }
    
@@ -77,21 +75,7 @@ class _Form3ScreenState extends State<Form2Screen> {
     }
   }
   String? _tipo = 'vivero';
-  TextEditingController nombreUMAController = TextEditingController(text: "");
-  TextEditingController claveRController = TextEditingController(text: "");
-  TextEditingController institucionAsController = TextEditingController(text: "");
-  TextEditingController propietarioRSocController = TextEditingController(text: "");
-  TextEditingController titularRepController = TextEditingController(text: "");
-  TextEditingController telefonoPropController = TextEditingController(text: "");
-  TextEditingController faxPropController = TextEditingController(text: "");
-  TextEditingController correoPropController = TextEditingController(text: "");
-  TextEditingController rfcPropController = TextEditingController(text: "");
-  TextEditingController propRespoTecController = TextEditingController(text: "");
-  TextEditingController titularTecController = TextEditingController(text: "");
-  TextEditingController telefonoTecController = TextEditingController(text: "");
-  TextEditingController faxTecController = TextEditingController(text: "");
-  TextEditingController correoTecController = TextEditingController(text: "");
-  TextEditingController rfcTecController = TextEditingController(text: "");
+
   
 
   @override
@@ -150,9 +134,9 @@ class _Form3ScreenState extends State<Form2Screen> {
                       });
                     },
                   ),
-                  TextFormField1(label: "Nombre de la UMA", hintText: "Ingrese el nombre la UMA", controller: nombreUMAController ,),
-                  TextFormField1(label: "Clave de registro", hintText: "Ingrese su clave", controller: claveRController,),
-                  TextFormField1(label: "Institución Y/0 asociasión", hintText: "Ingrese su la institución", controller:  institucionAsController,),
+                  TextFormField1(label: "Nombre de la UMA", hintText: "Ingrese el nombre la UMA", controller: form2Controller.nombreUMAController ,),
+                  TextFormField1(label: "Clave de registro", hintText: "Ingrese su clave", controller: form2Controller.claveRController,),
+                  TextFormField1(label: "Institución Y/0 asociasión", hintText: "Ingrese su la institución", controller: form2Controller. institucionAsController,),
                   SizedBox(height: responsive.hp(1),),
                    Title(
               color: Colors.black, 
@@ -172,12 +156,12 @@ class _Form3ScreenState extends State<Form2Screen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextFormField1(label: "Propietario o razón social", hintText: "Ingrese el Propietario o razón social", controller: propietarioRSocController,),
-                  TextFormField1(label: "Titular o representante legal", hintText: "Ingrese Representante legal", controller: titularRepController,),
-                  TextFormField1(label: "Teléfono", hintText: "Ingrese Teléfono", controller: telefonoPropController,),
-                  TextFormField1(label: "Fax", hintText: "Ingrese Fax", controller: faxPropController,),
-                  TextFormField1(label: "Correo electrónico", hintText: "Ingrese Correo Electrónico", controller: correoPropController,),
-                  TextFormField1(label: "RFC", hintText: "Ingrese RFC", controller: rfcPropController,),
+                  TextFormField1(label: "Propietario o razón social", hintText: "Ingrese el Propietario o razón social", controller: form2Controller.propietarioRSocController,),
+                  TextFormField1(label: "Titular o representante legal", hintText: "Ingrese Representante legal", controller: form2Controller.titularRepController,),
+                  TextFormField1(label: "Teléfono", hintText: "Ingrese Teléfono", controller: form2Controller.telefonoPropController,),
+                  TextFormField1(label: "Fax", hintText: "Ingrese Fax", controller: form2Controller.faxPropController,),
+                  TextFormField1(label: "Correo electrónico", hintText: "Ingrese Correo Electrónico", controller: form2Controller.correoPropController,),
+                  TextFormField1(label: "RFC", hintText: "Ingrese RFC", controller: form2Controller.rfcPropController,),
                   SizedBox(height: responsive.hp(2),),
                   Text('Responsable tecnico', 
                   textAlign: TextAlign.center,
@@ -195,12 +179,12 @@ class _Form3ScreenState extends State<Form2Screen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextFormField1(label: "Propietario o razón social", hintText: "Ingrese el Propietario o razón social", controller: propRespoTecController,),
-                  TextFormField1(label: "Titular o representante legal", hintText: "Ingrese Representante legal", controller: titularTecController,),
-                  TextFormField1(label: "Teléfono", hintText: "Ingrese Teléfono", controller: telefonoTecController,),
-                  TextFormField1(label: "Fax", hintText: "Ingrese Fax", controller: faxTecController,),
-                  TextFormField1(label: "Correo electrónico", hintText: "Ingrese Correo Electrónico", controller: correoTecController,),
-                  TextFormField1(label: "RFC", hintText: "Ingrese RFC", controller: rfcTecController,),
+                  TextFormField1(label: "Propietario o razón social", hintText: "Ingrese el Propietario o razón social", controller: form2Controller.propRespoTecController,),
+                  TextFormField1(label: "Titular o representante legal", hintText: "Ingrese Representante legal", controller: form2Controller.titularTecController,),
+                  TextFormField1(label: "Teléfono", hintText: "Ingrese Teléfono", controller: form2Controller.telefonoTecController,),
+                  TextFormField1(label: "Fax", hintText: "Ingrese Fax", controller: form2Controller.faxTecController,),
+                  TextFormField1(label: "Correo electrónico", hintText: "Ingrese Correo Electrónico", controller: form2Controller.correoTecController,),
+                  TextFormField1(label: "RFC", hintText: "Ingrese RFC", controller: form2Controller.rfcTecController,),
                   SizedBox(height: responsive.hp(2),),
                   Text('Ubicación',style: TextStyle(fontSize: responsive.ip(2))),
                   SizedBox(height: responsive.hp(2),),
@@ -234,31 +218,7 @@ class _Form3ScreenState extends State<Form2Screen> {
                   BtonImage(onClick: pickImage,),
                   SizedBox(height: responsive.hp(3)),
                   ElevatedButton(
-                    onPressed: () async{
-                      await addFormFichaViveros("Ficha de registro de viveros", _tipo ,nombreUMAController.text, claveRController.text,
-                      institucionAsController.text, propietarioRSocController.text, titularRepController.text, telefonoPropController.text, faxPropController.text, correoPropController.text,
-                      rfcPropController.text, propRespoTecController.text,titularTecController.text,telefonoTecController.text,faxTecController.text,
-                      correoTecController.text, rfcTecController.text, _center.latitude, _center.longitude, url, DateTime.now()).then((_) {
-                      User? user = FirebaseAuth.instance.currentUser;
-                        var kk = FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(user!.uid)
-                                .get()
-                                .then((DocumentSnapshot documentSnapshot) {
-                                  if (documentSnapshot.exists) {
-                            if (documentSnapshot.get('rool') == true) {
-                              context.pushReplacementNamed(HomeScreenAdmin.name);
-                            }else{
-                              context.pushReplacementNamed(HomeScreenUser.name);
-                            }
-                          } else {
-                            print('Document does not exist on the database');
-                          }
-                        });;
-                      setState(() {
-                      });
-                      });
-                    },
+                    onPressed: () => form2Controller.subirDatos(context, _tipo, _center, url),
                     child: Text("FINALIZAR", style: TextStyle(
                       color: Colors.white,
                       fontSize: responsive.ip(1.2),
