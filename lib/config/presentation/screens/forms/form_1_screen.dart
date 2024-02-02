@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +8,8 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
+import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart';
+import 'package:socio_bosques/config/presentation/screens/home/home_screen_admin.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_bton_image.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_maps.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_form_field.dart';
@@ -207,7 +211,22 @@ class _Form1ScreenState extends State<Form1Screen> {
                     onPressed: () async{
                       await addFormFichaCampo("Ficha de campo para evalución de predios" ,provinciaController.text, cantonController.text,
                       parroquiaController.text, cedulaController.text, superficieController.text, _useForestal, _center.latitude,_center.longitude, url, DateTime.now()).then((_) {
-                      context.pushReplacement('/reportes');
+                      User? user = FirebaseAuth.instance.currentUser;
+                        var kk = FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(user!.uid)
+                                .get()
+                                .then((DocumentSnapshot documentSnapshot) {
+                                  if (documentSnapshot.exists) {
+                            if (documentSnapshot.get('rool') == true) {
+                              context.pushReplacementNamed(HomeScreenAdmin.name);
+                            }else{
+                              context.pushReplacementNamed(HomeScreenUser.name);
+                            }
+                          } else {
+                            print('Document does not exist on the database');
+                          }
+                        });;
                       setState(() {
                       });
                       });

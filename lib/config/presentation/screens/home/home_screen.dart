@@ -1,26 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:socio_bosques/config/presentation/menu/home_card.dart';
-import 'package:socio_bosques/config/presentation/screens/forms/form_1_screen.dart';
+import 'package:socio_bosques/config/presentation/screens/auth/login_screen.dart';
 import 'package:socio_bosques/config/responsive.dart';
 
-class HomeScreen extends StatelessWidget {
-  static const String name = 'router_screen'; 
-  const HomeScreen({super.key});
+class HomeScreenUser extends StatelessWidget {
+  static const String name = 'router'; 
+  const HomeScreenUser({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final responsive = Responsive(context);
 
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.menu, color: Colors.white,),
+        leading: IconButton(onPressed: () async {
+          await FirebaseAuth.instance.signOut().then((value) =>context.pushReplacementNamed(LoginScreen.name));
+        }, icon: Icon(Icons.output, color: Colors.white,) ),
         backgroundColor: const Color(0xff102601),
       ),
       body: Column(
         children: [
-          Expanded(child: ListView.builder(itemCount: homeItems.length, itemBuilder: (BuildContext context, int index) {
-            return _HomeCard(title: homeItems[index].title, image: homeItems[index].image, route: homeItems[index].route,);
+          Expanded(child: ListView.builder(itemCount: homeItemsUser.length, itemBuilder: (BuildContext context, int index) {
+            return _HomeCard(title: homeItemsUser[index].title, image: homeItemsUser[index].image, route: homeItemsUser[index].route,);
           }))
           , //TextButton(onPressed: (){ context.pushReplacementNamed(Form1Screen.name);}, child: Text('forms'))
       ]),

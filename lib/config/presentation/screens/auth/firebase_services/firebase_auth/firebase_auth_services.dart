@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthService{
@@ -13,6 +14,14 @@ class FirebaseAuthService{
     }
     return null;
   }
+    Future<User?> postDetailsToFirestore(String email, bool rool) async {
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    var user = _auth.currentUser;
+    CollectionReference ref = FirebaseFirestore.instance.collection('users');
+    ref.doc(user!.uid).set({'email': email, 'rool': rool});
+    return null;
+  }
+
 
   Future<User?> signInwithEmailAndPassword(String email, String password) async{
     

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:location/location.dart' as loc;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
 import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart';
+import 'package:socio_bosques/config/presentation/screens/home/home_screen_admin.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_bton_image.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_elevated_button.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_form_field.dart';
@@ -30,7 +33,7 @@ class _Form4ScreenState extends State<Form4Screen> {
   final image = await ImagePicker().pickImage(source: ImageSource.camera);
   
   if(image == null) return;
-  final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FichaPredios/${DateTime.now()} .png');
+  final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FormularioPostulacion/${DateTime.now()} .png');
 
   await firebaseStorageRef.putFile(File(image.path));
 
@@ -165,7 +168,22 @@ class _Form4ScreenState extends State<Form4Screen> {
                       await addFormPostulacion("Formulario de postulación" ,razonEmpController.text, representController.text,
                       rucController.text, ciudadController.text, direcController.text, contactoController.text,numeroEmpleController.text, categoriaController.text,
                       productosController.text, anosFuncionamientoController.text, misionController.text, visionController.text,_center.latitude, _center.longitude, url, DateTime.now() ).then((_) {
-                      context.pushReplacement('/reportes');
+                      User? user = FirebaseAuth.instance.currentUser;
+                        var kk = FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(user!.uid)
+                                .get()
+                                .then((DocumentSnapshot documentSnapshot) {
+                                  if (documentSnapshot.exists) {
+                            if (documentSnapshot.get('rool') == true) {
+                              context.pushReplacementNamed(HomeScreenAdmin.name);
+                            }else{
+                              context.pushReplacementNamed(HomeScreenUser.name);
+                            }
+                          } else {
+                            print('Document does not exist on the database');
+                          }
+                        });;
                       setState(() {
                       });
                       });

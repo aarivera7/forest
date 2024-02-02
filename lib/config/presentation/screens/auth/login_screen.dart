@@ -1,11 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_auth/firebase_auth_services.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/signup_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart';
+import 'package:socio_bosques/config/presentation/screens/home/home_screen_admin.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_background_auth.dart';
-import 'package:socio_bosques/config/presentation/screens/widgets/custom_elevated_button.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_buttoms_auth.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_login_text_form.dart';
 import 'package:socio_bosques/config/responsive.dart';
@@ -37,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: responsive.hp(35),),
                   const _LoginForm(),
                   SizedBox(height: responsive.hp(2),),
-                  TextButtomsAuth(label: "Registrarse", screen: SignupScreen.name)
+                  TextButtomsAuth(label: "Registrarse", screen: SignupScreen.name),
                 ]
               ),
             )
@@ -69,6 +70,7 @@ class _LoginFormState extends State<_LoginForm> {
     _passwordController.dispose();
     super.dispose();
   }
+  
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
@@ -120,11 +122,25 @@ class _LoginFormState extends State<_LoginForm> {
  
   String email = _emailController.text;
   String password = _passwordController.text;
-
   User? user =await _auth.signInwithEmailAndPassword(email, password);
 
   if(user != null){
-    context.pushReplacementNamed(HomeScreen.name);
+    User? user = FirebaseAuth.instance.currentUser;
+    var kk = FirebaseFirestore.instance
+            .collection('users')
+            .doc(user!.uid)
+            .get()
+            .then((DocumentSnapshot documentSnapshot) {
+              if (documentSnapshot.exists) {
+        if (documentSnapshot.get('rool') == true) {
+           context.pushReplacementNamed(HomeScreenAdmin.name);
+        }else{
+          context.pushReplacementNamed(HomeScreenUser.name);
+        }
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
   }else{
     print('error al logear usuario');
   }

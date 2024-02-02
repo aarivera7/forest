@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:location/location.dart' as loc;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +10,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
 import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart';
+import 'package:socio_bosques/config/presentation/screens/home/home_screen_admin.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_bton_image.dart';
-import 'package:socio_bosques/config/presentation/screens/widgets/custom_elevated_button.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_form_field.dart';
 import 'package:socio_bosques/config/responsive.dart';
-
-enum Acta { retencion, decomiso }
-enum Accion { faltaEtiqueta, etiquetaNoAprobada, adulteracion, deteriodo, anomalia, sinRegistro  }
 
 class Form6Screen extends StatefulWidget {
   static const String name = 'form6'; 
@@ -33,7 +32,7 @@ class _Form6ScreenState extends State<Form6Screen> {
   final image = await ImagePicker().pickImage(source: ImageSource.camera);
   
   if(image == null) return;
-  final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FichaPredios/${DateTime.now()} .png');
+  final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/ActaRetencion/${DateTime.now()} .png');
 
   await firebaseStorageRef.putFile(File(image.path));
 
@@ -273,7 +272,23 @@ class _Form6ScreenState extends State<Form6Screen> {
                       presentacionController.text, registroController.text, numLoteEmpController.text, fechaController.text,produccionController.text, vencimientoController.text,
                       nombreLicEmpresaController.text, nombreLicDecomisaController.text, _accion,notificadoEmpresaController.text, observacionController.text, nombreController.text,
                       cedulaController.text , cargoPredController.text,  _center.latitude, _center.longitude, url, DateTime.now()).then((_) {
-                      context.pushReplacement('/reportes');
+                      //context.pushReplacement('/reportes');
+                       User? user = FirebaseAuth.instance.currentUser;
+                        var kk = FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(user!.uid)
+                                .get()
+                                .then((DocumentSnapshot documentSnapshot) {
+                                  if (documentSnapshot.exists) {
+                            if (documentSnapshot.get('rool') == true) {
+                              context.pushReplacementNamed(HomeScreenAdmin.name);
+                            }else{
+                              context.pushReplacementNamed(HomeScreenUser.name);
+                            }
+                          } else {
+                            print('Document does not exist on the database');
+                          }
+                        });;
                       setState(() {
                       });
                       });

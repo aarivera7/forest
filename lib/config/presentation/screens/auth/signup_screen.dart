@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_auth/firebase_auth_services.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/login_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_background_auth.dart';
-import 'package:socio_bosques/config/presentation/screens/widgets/custom_elevated_button.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_buttoms_auth.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_login_text_form.dart';
 import 'package:socio_bosques/config/responsive.dart';
@@ -135,12 +134,16 @@ void signUp ()async{
   String nameAndLastname = _nameAndLastnameController.text;
   String email = _emailController.text;
   String password = _passwordController.text;
+  bool admin = false;
 
   User? user =await _auth.signUpwithEmailAndPassword(email, password);
-
   if(user != null){
-    print('Usuario creado');
-    context.pushReplacementNamed(LoginScreen.name);
+
+    User? subida = await _auth.postDetailsToFirestore(email, admin);
+    if(user != null){
+      context.pushReplacementNamed(LoginScreen.name);
+    }
+      context.pushReplacementNamed(LoginScreen.name);
   }else{
     print('error al crear usuario');
   }

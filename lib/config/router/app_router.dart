@@ -6,6 +6,7 @@ import 'package:socio_bosques/config/presentation/screens/forms/form_4_screen.da
 import 'package:socio_bosques/config/presentation/screens/forms/form_5_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/forms/form_6_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/home/home_form_center.dart';
+import 'package:socio_bosques/config/presentation/screens/home/home_screen_admin.dart';
 import 'package:socio_bosques/config/presentation/screens/resportes/reportes_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/screens.dart';
 
@@ -30,9 +31,15 @@ final appRouter = GoRouter(
     ),
 
     GoRoute(
-      path: '/home',
-      name: HomeScreen.name,
-      builder: (context, state) => const HomeScreen(),
+      path: '/homeuser',
+      name: HomeScreenUser.name,
+      builder: (context, state) => const HomeScreenUser(),
+    ),
+
+    GoRoute(
+      path: '/homeadmin',
+      name: HomeScreenAdmin.name,
+      builder: (context, state) => const HomeScreenAdmin(),
     ),
 
     GoRoute(
