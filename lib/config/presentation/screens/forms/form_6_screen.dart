@@ -27,23 +27,23 @@ class _Form6ScreenState extends State<Form6Screen> {
    late String url;
   Future pickImage() async{
 
-  try {
-  final image = await ImagePicker().pickImage(source: ImageSource.camera);
-  
-  if(image == null) return;
-  final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FichaPredios/${DateTime.now()} .png');
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      
+      if(image == null) return;
+      final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FichaPredios/${DateTime.now()} .png');
 
-  await firebaseStorageRef.putFile(File(image.path));
+      await firebaseStorageRef.putFile(File(image.path));
 
-  final urlImage = await firebaseStorageRef.getDownloadURL();
-  
-  final imageTemporary  = File(image.path);
-  setState(()=>this.image = imageTemporary) ;
-  setState(()=>url = urlImage) ;
-} on PlatformException catch (e) {
-  print('Fallo en la imagen');
-}
-   }
+      final urlImage = await firebaseStorageRef.getDownloadURL();
+      
+      final imageTemporary  = File(image.path);
+      setState(()=>this.image = imageTemporary) ;
+      setState(()=>url = urlImage) ;
+    } on PlatformException catch (e) {
+      print('Fallo en la imagen');
+    }
+  }
   late GoogleMapController mapController;
   LatLng _center = LatLng(0.0, 0.0);
   bool _loading = true;

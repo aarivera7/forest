@@ -8,6 +8,7 @@ class Form1Controller {
   TextEditingController cedulaController = TextEditingController(text: "");
   TextEditingController superficieController = TextEditingController(text: "");
 
+  // Metodo para subir datos a firebase
   void subirDatos (context, image, useForestal, center) async{
     await addFormFichaCampo("Ficha de campo para evalución de predios" ,provinciaController.text, cantonController.text,
     parroquiaController.text, cedulaController.text, superficieController.text, useForestal, center.latitude, center.longitude, image, DateTime.now()).then((_) {

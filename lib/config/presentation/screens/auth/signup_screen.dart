@@ -16,7 +16,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
 
-  
+  // Arranca la vista de registro
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);

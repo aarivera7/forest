@@ -15,6 +15,7 @@ class LoginController {
     String email = emailController.text;
     String password = passwordController.text;
 
+    // Cotrolador de autenticación
     User? user = await _auth.signInwithEmailAndPassword(email, password);
 
     if(user != null){

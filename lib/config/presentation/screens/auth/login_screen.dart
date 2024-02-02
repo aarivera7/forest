@@ -15,6 +15,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // Arraca la vista de inicio de sesion
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
@@ -86,6 +87,8 @@ class _LoginFormState extends State<_LoginForm> {
             title: "Contraseña",
           ),
           SizedBox(height: responsive.hp(3),),
+
+          // Aqui se llama al metodo login del controlador
           ElevatedButton(
             onPressed: () => loginController.login(context),
             child: Text('INGRESAR', style: TextStyle(

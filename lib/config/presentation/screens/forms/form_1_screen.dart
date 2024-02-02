@@ -76,6 +76,8 @@ class _Form1ScreenState extends State<Form1Screen> {
   }
   String? _useForestal = 'plantacionesProduccion';	
 
+
+  // Se arranca con el formulario 1
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
@@ -200,6 +202,7 @@ class _Form1ScreenState extends State<Form1Screen> {
                   BtonImage(onClick: pickImage,),
                   SizedBox(height: responsive.hp(3)),
                   ElevatedButton(
+                    // Se pasa al controlador para subir los datos
                     onPressed: () => form1Controller.subirDatos(context, url, _useForestal, _center),
                     child: Text("FINALIZAR", style: TextStyle(
                       color: Colors.white,

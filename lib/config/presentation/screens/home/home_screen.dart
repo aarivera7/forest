@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:socio_bosques/config/controller/home/home_controller.dart';
 import 'package:socio_bosques/config/presentation/menu/home_card.dart';
 import 'package:socio_bosques/config/responsive.dart';
 
@@ -37,9 +37,11 @@ class _HomeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
+    final HomeController homeController = HomeController();
 
     return InkWell(
-      onTap: () => context.push(route),
+      // Se cambia de vista
+      onTap: () => homeController.seleccion(context, route),
       child: Align(
         
         alignment: Alignment.center,

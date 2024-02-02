@@ -10,13 +10,17 @@ class SignUpController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  // Se encarga del registro de usuario
   void signUp (context) async{
     String email = emailController.text;
     String password = passwordController.text;
 
+    // Se encarga de registrar el usuario
     User? user = await _auth.signUpwithEmailAndPassword(email, password);
 
     if(user != null){
+
+      // Se encarga de enviar al usuario a la pantalla de login
       context.pushReplacementNamed(LoginScreen.name);
     }else{
       print('error al crear usuario');
