@@ -3,14 +3,10 @@ import 'package:location/location.dart' as loc;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:socio_bosques/config/controller/forms/form_6_controller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
-import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_bton_image.dart';
-import 'package:socio_bosques/config/presentation/screens/widgets/custom_elevated_button.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_form_field.dart';
 import 'package:socio_bosques/config/responsive.dart';
 

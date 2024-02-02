@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:socio_bosques/config/controller/auth/login_controller.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/signup_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_background_auth.dart';

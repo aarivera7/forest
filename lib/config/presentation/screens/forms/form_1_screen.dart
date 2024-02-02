@@ -26,25 +26,25 @@ class _Form1ScreenState extends State<Form1Screen> {
   final form1Controller = Form1Controller();
   File? image;
   late String url;
+
   Future pickImage() async{
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      
+      if(image == null) return;
+      final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FichaPredios/${DateTime.now()} .png');
 
-  try {
-  final image = await ImagePicker().pickImage(source: ImageSource.camera);
-  
-  if(image == null) return;
-  final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FichaPredios/${DateTime.now()} .png');
+      await firebaseStorageRef.putFile(File(image.path));
 
-  await firebaseStorageRef.putFile(File(image.path));
-
-  final urlImage = await firebaseStorageRef.getDownloadURL();
-  
-  final imageTemporary  = File(image.path);
-  setState(()=>this.image = imageTemporary) ;
-  setState(()=>url = urlImage) ;
-} on PlatformException catch (e) {
-  print('Fallo en la imagen');
-}
-   }
+      final urlImage = await firebaseStorageRef.getDownloadURL();
+      
+      final imageTemporary  = File(image.path);
+      setState(()=>this.image = imageTemporary) ;
+      setState(()=>url = urlImage) ;
+    } on PlatformException catch (e) {
+      print('Fallo en la imagen');
+    }
+  }
   late GoogleMapController mapController;
   LatLng _center = LatLng(0.0, 0.0);
   bool _loading = true;
@@ -62,7 +62,7 @@ class _Form1ScreenState extends State<Form1Screen> {
   }
    
    
-   Future<void> _getCurrentLocation() async {
+  Future<void> _getCurrentLocation() async {
     final location = loc.Location();
     try {
       var currentLocation = await location.getLocation();
@@ -74,7 +74,7 @@ class _Form1ScreenState extends State<Form1Screen> {
       print('Error obteniendo la ubicación: $e');
     }
   }
- String? _useForestal = 'plantacionesProduccion';	
+  String? _useForestal = 'plantacionesProduccion';	
 
   @override
   Widget build(BuildContext context) {
