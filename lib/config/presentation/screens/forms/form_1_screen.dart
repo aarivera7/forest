@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
+import 'package:socio_bosques/config/controller/forms/form_1_controller.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_bton_image.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_form_field.dart';
 import 'package:socio_bosques/config/responsive.dart';
 import 'package:location/location.dart' as loc;
+
 class Form1Screen extends StatefulWidget {
   static const String name = 'form1'; 
   
@@ -21,19 +21,20 @@ class Form1Screen extends StatefulWidget {
 }
 
 class _Form1ScreenState extends State<Form1Screen> {
-   File? image;
+  final form1Controller = Form1Controller();
+  File? image;
   Future pickImage() async{
 
-  try {
-  final image = await ImagePicker().pickImage(source: ImageSource.camera);
-  
-  if(image == null) return;
-  final imageTemporary  = File(image.path);
-  setState(()=>this.image = imageTemporary) ;
-} on PlatformException catch (e) {
-  print('Fallo en la imagen');
-}
-   }
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      
+      if(image == null) return;
+      final imageTemporary  = File(image.path);
+      setState(()=>this.image = imageTemporary) ;
+    } on PlatformException catch (e) {
+      print('Fallo en la imagen');
+    }
+  }
   late GoogleMapController mapController;
   LatLng _center = LatLng(0.0, 0.0);
   bool _loading = true;
@@ -64,11 +65,6 @@ class _Form1ScreenState extends State<Form1Screen> {
     }
   }
  String? _useForestal = 'plantacionesProduccion';	
-  TextEditingController provinciaController = TextEditingController(text: "");
-  TextEditingController cantonController = TextEditingController(text: "");
-  TextEditingController parroquiaController = TextEditingController(text: "");
-  TextEditingController cedulaController = TextEditingController(text: "");
-  TextEditingController superficieController = TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
@@ -101,11 +97,11 @@ class _Form1ScreenState extends State<Form1Screen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextFormField1(label: "Provincia", hintText: "Provincia", controller: provinciaController,),
-                  TextFormField1(label: "Canton", hintText: "Canton", controller: cantonController,),
-                  TextFormField1(label: "Parroquia", hintText: "Parroquia",controller: parroquiaController),
-                  TextFormField1(label: "Cédula", hintText: "Cédula", controller: cedulaController,),
-                  TextFormField1(label: "Superficie en hectareas", hintText: "Superficie en hectareas", controller: superficieController,),
+                  TextFormField1(label: "Provincia", hintText: "Provincia", controller: form1Controller.provinciaController,),
+                  TextFormField1(label: "Canton", hintText: "Canton", controller: form1Controller.cantonController,),
+                  TextFormField1(label: "Parroquia", hintText: "Parroquia",controller: form1Controller.parroquiaController),
+                  TextFormField1(label: "Cédula", hintText: "Cédula", controller: form1Controller.cedulaController,),
+                  TextFormField1(label: "Superficie en hectareas", hintText: "Superficie en hectareas", controller: form1Controller.superficieController,),
                   SizedBox(height: responsive.hp(3),),
                   Text('Uso Forestal', style: TextStyle(fontSize: responsive.ip(2)),),
                   SizedBox(height: responsive.hp(3),),
@@ -191,14 +187,7 @@ class _Form1ScreenState extends State<Form1Screen> {
                     child: image != null? Image.file(image!, fit: BoxFit.cover,): Image.asset('assets/images/noImage.jpg', fit: BoxFit.cover,)),
                   SizedBox(height: responsive.hp(3)),
                   ElevatedButton(
-                    onPressed: () async{
-                      await addFormFichaCampo("Ficha de campo para evalución de predios" ,provinciaController.text, cantonController.text,
-                      parroquiaController.text, cedulaController.text, superficieController.text, _useForestal, _center.latitude,_center.longitude, image, DateTime.now()).then((_) {
-                      context.pushReplacement('/reportes');
-                      setState(() {
-                      });
-                      });
-                    },
+                    onPressed: () => form1Controller.subirDatos(context, image, _useForestal, _center),
                     child: Text("FINALIZAR", style: TextStyle(
                       color: Colors.white,
                       fontSize: responsive.ip(1.2),

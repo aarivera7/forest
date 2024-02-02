@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:socio_bosques/config/controller/forms/form_6_controller.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
 import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_elevated_button.dart';
@@ -18,23 +19,9 @@ class Form6Screen extends StatefulWidget {
 }
 
 class _Form6ScreenState extends State<Form6Screen> {
+  final form6Controller = Form6Controller();
   String? _acta = 'retencion';
   String? _accion = 'faltaEtiqueta';
-  TextEditingController nombreEmprProdController = TextEditingController(text: "");
-  TextEditingController cantidadController = TextEditingController(text: "");
-  TextEditingController presentacionController = TextEditingController(text: "");
-  TextEditingController registroController = TextEditingController(text: "");
-  TextEditingController numLoteEmpController = TextEditingController(text: "");
-  TextEditingController fechaController = TextEditingController(text: "");
-  TextEditingController produccionController = TextEditingController(text: "");
-  TextEditingController vencimientoController = TextEditingController(text: "");
-  TextEditingController nombreLicEmpresaController = TextEditingController(text: "");
-  TextEditingController nombreLicDecomisaController = TextEditingController(text: "");
-  TextEditingController notificadoEmpresaController = TextEditingController(text: "");
-  TextEditingController observacionController = TextEditingController(text: "");
-  TextEditingController nombreController = TextEditingController(text: "");
-  TextEditingController cedulaController = TextEditingController(text: "");
-  TextEditingController cargoPredController = TextEditingController(text: "");
 
 
   @override
@@ -93,16 +80,16 @@ class _Form6ScreenState extends State<Form6Screen> {
                       });
                     },
                   ),
-                  TextFormField1(label: "Nombre de Producto: ", hintText: "Ingrese nombre del Producto", controller: nombreEmprProdController),
-                  TextFormField1(label: "Cantidad:", hintText: "Ingrese la Cantidad ", controller: cantidadController),
-                  TextFormField1(label: "Presentación: ", hintText: "Ingrese la Presentación", controller: presentacionController),
-                  TextFormField1(label: "Registro: ", hintText: "Ingrese el Registro", controller: registroController),
-                  TextFormField1(label: "N°: Lote: ", hintText: "Ingrese el N° de Lote", controller: numLoteEmpController),
-                  TextFormField1(label: "Fecha:", hintText: "Ingrese la Fecha", controller: fechaController),
-                  TextFormField1(label: "Producción:", hintText: "Ingrese  la Producción", controller: produccionController),
-                  TextFormField1(label: "Fecha de Vencimiento:", hintText: "Ingrese la Fecha de Vencimiento", controller: vencimientoController),
-                  TextFormField1(label: "Nombre y Lic De la Empresa:", hintText: "Ingrese el Nombre De La Empresa", controller: nombreLicEmpresaController),
-                  TextFormField1(label: "Nombre  y Lic  Retiene o Decomisa:", hintText: "Ingrese el Nombre Del Que Retiene", controller: nombreLicDecomisaController),
+                  TextFormField1(label: "Nombre de Producto: ", hintText: "Ingrese nombre del Producto", controller:  form6Controller.nombreEmprProdController),
+                  TextFormField1(label: "Cantidad:", hintText: "Ingrese la Cantidad ", controller:  form6Controller.cantidadController),
+                  TextFormField1(label: "Presentación: ", hintText: "Ingrese la Presentación", controller:  form6Controller.presentacionController),
+                  TextFormField1(label: "Registro: ", hintText: "Ingrese el Registro", controller:  form6Controller.registroController),
+                  TextFormField1(label: "N°: Lote: ", hintText: "Ingrese el N° de Lote", controller:  form6Controller.numLoteEmpController),
+                  TextFormField1(label: "Fecha:", hintText: "Ingrese la Fecha", controller:  form6Controller.fechaController),
+                  TextFormField1(label: "Producción:", hintText: "Ingrese  la Producción", controller:  form6Controller.produccionController),
+                  TextFormField1(label: "Fecha de Vencimiento:", hintText: "Ingrese la Fecha de Vencimiento", controller:  form6Controller.vencimientoController),
+                  TextFormField1(label: "Nombre y Lic De la Empresa:", hintText: "Ingrese el Nombre De La Empresa", controller:  form6Controller.nombreLicEmpresaController),
+                  TextFormField1(label: "Nombre  y Lic  Retiene o Decomisa:", hintText: "Ingrese el Nombre Del Que Retiene", controller:  form6Controller.nombreLicDecomisaController),
 
                   SizedBox(height: responsive.hp(1),),
                   Text("Motivo de acción: ", 
@@ -172,24 +159,15 @@ class _Form6ScreenState extends State<Form6Screen> {
                     },
                   ),
 
-                  TextFormField1(label: "Notificado por la empresa: ", hintText: "Ingrese Notificado Por La Empresa", controller: notificadoEmpresaController),
-                  TextFormField1(label: "Observación: ", hintText: "Ingrese la Observación", controller: observacionController),
-                  TextFormField1(label: "Nombre: ", hintText: "Ingrese el Nombre", controller: nombreController),
-                  TextFormField1(label: "Cédula: ", hintText: "Ingrese la Cédula", controller: cedulaController,),
-                  TextFormField1(label: "Cargo: ", hintText: "Ingrese el Cargo", controller: cargoPredController,),
+                  TextFormField1(label: "Notificado por la empresa: ", hintText: "Ingrese Notificado Por La Empresa", controller:  form6Controller.notificadoEmpresaController),
+                  TextFormField1(label: "Observación: ", hintText: "Ingrese la Observación", controller:  form6Controller.observacionController),
+                  TextFormField1(label: "Nombre: ", hintText: "Ingrese el Nombre", controller:  form6Controller.nombreController),
+                  TextFormField1(label: "Cédula: ", hintText: "Ingrese la Cédula", controller:  form6Controller.cedulaController,),
+                  TextFormField1(label: "Cargo: ", hintText: "Ingrese el Cargo", controller:  form6Controller.cargoPredController,),
 
                   SizedBox(height: responsive.hp(1),),
                    ElevatedButton(
-                    onPressed: () async{
-                      await addPActaRetencionProductos("Acta de retención de productos forestales y vida silvestre", _acta,nombreEmprProdController.text, cantidadController.text,
-                      presentacionController.text, registroController.text, numLoteEmpController.text, fechaController.text,produccionController.text, vencimientoController.text,
-                      nombreLicEmpresaController.text, nombreLicDecomisaController.text, _accion,notificadoEmpresaController.text, observacionController.text, nombreController.text,
-                      cedulaController.text , cargoPredController.text,  DateTime.now()).then((_) {
-                      context.pushReplacement('/reportes');
-                      setState(() {
-                      });
-                      });
-                    },
+                    onPressed: () => form6Controller.subirDatos(context, _acta, _accion),
                     child: Text("FINALIZAR", style: TextStyle(
                       color: Colors.white,
                       fontSize: responsive.ip(1.2),

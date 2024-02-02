@@ -1,11 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_auth/firebase_auth_services.dart';
+import 'package:socio_bosques/config/controller/auth/login_controller.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/signup_screen.dart';
-import 'package:socio_bosques/config/presentation/screens/home/home_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_background_auth.dart';
-import 'package:socio_bosques/config/presentation/screens/widgets/custom_elevated_button.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_buttoms_auth.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_login_text_form.dart';
 import 'package:socio_bosques/config/responsive.dart';
@@ -57,16 +54,12 @@ class _LoginForm extends StatefulWidget {
   State<_LoginForm> createState() => _LoginFormState();
 }
 
-  final FirebaseAuthService _auth = FirebaseAuthService();
 class _LoginFormState extends State<_LoginForm> {
-
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-
+  LoginController loginController = LoginController();
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
+    loginController.emailController.dispose();
+    loginController.passwordController.dispose();
     super.dispose();
   }
   @override
@@ -78,7 +71,7 @@ class _LoginFormState extends State<_LoginForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
            LoginTextFormField(
-            controller: _emailController,
+            controller: loginController.emailController,
             label: "Ingresa tu Correo electrónico", 
             icon: Icons.email_rounded, 
             isPassword: false,
@@ -86,7 +79,7 @@ class _LoginFormState extends State<_LoginForm> {
           ),
           SizedBox(height: responsive.hp(2),),
            LoginTextFormField(
-            controller: _passwordController,
+            controller: loginController.passwordController,
             label: "Ingresa tu Contraseña", 
             icon: Icons.lock_rounded, 
             isPassword: true,
@@ -95,7 +88,7 @@ class _LoginFormState extends State<_LoginForm> {
           ),
           SizedBox(height: responsive.hp(3),),
           ElevatedButton(
-            onPressed: _Login,
+            onPressed: () => loginController.login(context),
             child: Text('INGRESAR', style: TextStyle(
               color: Colors.white,
               fontSize: responsive.ip(1.2),
@@ -116,19 +109,5 @@ class _LoginFormState extends State<_LoginForm> {
       )
     );
   }
-  void _Login ()async{
- 
-  String email = _emailController.text;
-  String password = _passwordController.text;
-
-  User? user =await _auth.signInwithEmailAndPassword(email, password);
-
-  if(user != null){
-    context.pushReplacementNamed(HomeScreen.name);
-  }else{
-    print('error al logear usuario');
-  }
-
-}
 }
 

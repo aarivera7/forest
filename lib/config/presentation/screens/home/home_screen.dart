@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:socio_bosques/config/presentation/menu/home_card.dart';
-import 'package:socio_bosques/config/presentation/screens/forms/form_1_screen.dart';
 import 'package:socio_bosques/config/responsive.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -10,7 +9,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final responsive = Responsive(context);
 
     return Scaffold(
       appBar: AppBar(

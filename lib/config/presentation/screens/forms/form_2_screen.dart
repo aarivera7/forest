@@ -11,10 +11,10 @@ class Form2Screen extends StatefulWidget {
   const Form2Screen({super.key});
 
   @override
-  State<Form2Screen> createState() => _Form3ScreenState();
+  State<Form2Screen> createState() => _Form2ScreenState();
 }
 
-class _Form3ScreenState extends State<Form2Screen> {
+class _Form2ScreenState extends State<Form2Screen> {
   Tipo? _tipo = Tipo.vivero;
 
   @override

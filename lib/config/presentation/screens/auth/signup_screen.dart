@@ -1,10 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_auth/firebase_auth_services.dart';
+import 'package:socio_bosques/config/controller/auth/signup_controller.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/login_screen.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_background_auth.dart';
-import 'package:socio_bosques/config/presentation/screens/widgets/custom_elevated_button.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_buttoms_auth.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_login_text_form.dart';
 import 'package:socio_bosques/config/responsive.dart';
@@ -52,7 +49,6 @@ class _SignupScreenState extends State<SignupScreen> {
 }
 
 
-
 class _SignUpForm extends StatefulWidget {
   const _SignUpForm({
     super.key,
@@ -61,18 +57,15 @@ class _SignUpForm extends StatefulWidget {
   @override
   State<_SignUpForm> createState() => _SignUpFormState();
 }
-final FirebaseAuthService _auth = FirebaseAuthService();
 
 class _SignUpFormState extends State<_SignUpForm> {
-  TextEditingController _nameAndLastnameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  SignUpController signUpController = SignUpController();
 
   @override
   void dispose() {
-    _nameAndLastnameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
+    signUpController.nameAndLastnameController.dispose();
+    signUpController.emailController.dispose();
+    signUpController.passwordController.dispose();
     super.dispose();
   }
   @override
@@ -84,7 +77,7 @@ class _SignUpFormState extends State<_SignUpForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
            LoginTextFormField(
-            controller: _nameAndLastnameController,
+            controller: signUpController.nameAndLastnameController,
             label: "Ingresa tus Nombres y Apellidos", 
             icon: Icons.person_rounded, 
             isPassword: false,
@@ -92,7 +85,7 @@ class _SignUpFormState extends State<_SignUpForm> {
           ),
           SizedBox(height: responsive.hp(1),),
            LoginTextFormField(
-            controller: _emailController ,
+            controller: signUpController.emailController ,
             label: "Ingresa tu Correo electrónico", 
             icon: Icons.email_rounded, 
             isPassword: false,
@@ -100,7 +93,7 @@ class _SignUpFormState extends State<_SignUpForm> {
           ),
           SizedBox(height: responsive.hp(1),),
            LoginTextFormField(
-            controller: _passwordController,
+            controller: signUpController.passwordController,
             label: "Ingresa tu Contraseña", 
             icon: Icons.lock_rounded, 
             isPassword: true,
@@ -109,7 +102,7 @@ class _SignUpFormState extends State<_SignUpForm> {
           ),
           SizedBox(height: responsive.hp(2),),
           ElevatedButton(
-            onPressed: signUp,
+            onPressed: () => signUpController.signUp(context),
             child: Text("Registrar", style: TextStyle(
               color: Colors.white,
               fontSize: responsive.ip(1.2),
@@ -130,20 +123,4 @@ class _SignUpFormState extends State<_SignUpForm> {
       )
     );
   }
-  
-void signUp ()async{
-  String nameAndLastname = _nameAndLastnameController.text;
-  String email = _emailController.text;
-  String password = _passwordController.text;
-
-  User? user =await _auth.signUpwithEmailAndPassword(email, password);
-
-  if(user != null){
-    print('Usuario creado');
-    context.pushReplacementNamed(LoginScreen.name);
-  }else{
-    print('error al crear usuario');
-  }
-
-}
 }
