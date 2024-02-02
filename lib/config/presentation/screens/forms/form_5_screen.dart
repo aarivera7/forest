@@ -1,6 +1,13 @@
+import 'dart:io';
+import 'package:location/location.dart' as loc;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
+import 'package:socio_bosques/config/presentation/screens/widgets/custom_bton_image.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_form_field.dart';
 import 'package:socio_bosques/config/responsive.dart';
 
@@ -18,6 +25,56 @@ class Form5Screen extends StatefulWidget {
 }
 
 class _Form5ScreenState extends State<Form5Screen> {
+  File? image;
+   late String url;
+  Future pickImage() async{
+
+  try {
+  final image = await ImagePicker().pickImage(source: ImageSource.camera);
+  
+  if(image == null) return;
+  final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FichaPredios/${DateTime.now()} .png');
+
+  await firebaseStorageRef.putFile(File(image.path));
+
+  final urlImage = await firebaseStorageRef.getDownloadURL();
+  
+  final imageTemporary  = File(image.path);
+  setState(()=>this.image = imageTemporary) ;
+  setState(()=>url = urlImage) ;
+} on PlatformException catch (e) {
+  print('Fallo en la imagen');
+}
+   }
+  late GoogleMapController mapController;
+  LatLng _center = LatLng(0.0, 0.0);
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+  
+
+  void _onMapCreated(GoogleMapController controller) {
+   
+    mapController = controller;
+  }
+   
+   
+   Future<void> _getCurrentLocation() async {
+    final location = loc.Location();
+    try {
+      var currentLocation = await location.getLocation();
+      setState(() {
+        _center = LatLng(currentLocation.latitude!, currentLocation.longitude!);
+        _loading = false;
+      });
+    } catch (e) {
+      print('Error obteniendo la ubicación: $e');
+    }
+  }
   String? _tipo = 'natural';
   String? _calidad = 'propietario';
   String? _aprovechamiento = 'domestica';
@@ -296,14 +353,45 @@ class _Form5ScreenState extends State<Form5Screen> {
                   TextFormField1(label: "Matricula Inmobiliaria ", hintText: "Ingrese  la Inmobilaria", controller: matriculaPredController),
                   TextFormField1(label: "Escritura Publica No:", hintText: "Ingrese  Escriturá Publica", controller: escrituraPredController),
                   TextFormField1(label: "Fecha", hintText: "Ingrese Fecha", controller: fechaPreController),
-                  SizedBox(height: responsive.hp(1),),
+                   SizedBox(height: responsive.hp(2),),
+                  Text('Ubicación',style: TextStyle(fontSize: responsive.ip(2))),
+                  SizedBox(height: responsive.hp(2),),
+                  SizedBox(
+                    width: responsive.wp(75),
+                    height: responsive.hp(30),
+                    child: _loading
+                        ? Center(child: CircularProgressIndicator())
+                        : GoogleMap(
+                            onMapCreated: _onMapCreated,
+                            initialCameraPosition: CameraPosition(
+                              target: _center,
+                              zoom: 15.0,
+                            ),
+                            markers: {
+                              Marker(
+                                markerId: MarkerId('currentLocation'),
+                                position: _center,
+                              ),
+                            },
+                          ),
+                  ),
+                  SizedBox(height: responsive.hp(2),),
+                  Text('Prueba',style: TextStyle(fontSize: responsive.ip(2))),
+                  SizedBox(height: responsive.hp(2),),
+                  SizedBox(
+                    width: responsive.wp(75),
+                    height: responsive.hp(30),
+                    child: image != null? Image.file(image!, fit: BoxFit.cover,): Image.asset('assets/images/noImage.jpg', fit: BoxFit.cover,)),
+                  SizedBox(height: responsive.hp(3)),
+                  BtonImage(onClick: pickImage,),
+                  SizedBox(height: responsive.hp(3)),
                   ElevatedButton(
                     onPressed: () async{
                       await addPlanAprovechamientoForestal("Plan de aprovechamiento forestal" , _tipo, razonSocController.text, cedRucController.text,
                       representanteController.text, cedRepresentanteController.text, direccionEmpController.text, ciudadController.text,telefonoController.text, emailController.text,
                       _calidad, _aprovechamiento, especiesController.text, numArbolesController.text, volumController.text, especieAprovController.text, nombreaCieController.text,
                       costoProyectController.text , nombrePredController.text , matriculaPredController.text , escrituraPredController.text ,
-                      fechaPreController.text, DateTime.now(), ).then((_) {
+                      fechaPreController.text, _center.latitude, _center.longitude, url,DateTime.now(), ).then((_) {
                       context.pushReplacement('/reportes');
                       setState(() {
                       });

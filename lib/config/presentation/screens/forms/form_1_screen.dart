@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:socio_bosques/config/presentation/screens/auth/firebase_services/firebase_forms/firebase_forms_services_push.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_bton_image.dart';
+import 'package:socio_bosques/config/presentation/screens/widgets/custom_maps.dart';
 import 'package:socio_bosques/config/presentation/screens/widgets/custom_text_form_field.dart';
 import 'package:socio_bosques/config/responsive.dart';
 import 'package:location/location.dart' as loc;
@@ -22,14 +24,22 @@ class Form1Screen extends StatefulWidget {
 
 class _Form1ScreenState extends State<Form1Screen> {
    File? image;
+   late String url;
   Future pickImage() async{
 
   try {
   final image = await ImagePicker().pickImage(source: ImageSource.camera);
   
   if(image == null) return;
+  final firebaseStorageRef = FirebaseStorage.instance.ref().child('images/FichaPredios/${DateTime.now()} .png');
+
+  await firebaseStorageRef.putFile(File(image.path));
+
+  final urlImage = await firebaseStorageRef.getDownloadURL();
+  
   final imageTemporary  = File(image.path);
   setState(()=>this.image = imageTemporary) ;
+  setState(()=>url = urlImage) ;
 } on PlatformException catch (e) {
   print('Fallo en la imagen');
 }
@@ -73,6 +83,7 @@ class _Form1ScreenState extends State<Form1Screen> {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
+    final maps = CustomMaps();
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.menu, color: Colors.white,),
@@ -162,7 +173,7 @@ class _Form1ScreenState extends State<Form1Screen> {
                   SizedBox(height: responsive.hp(2),),
                   Text('Ubicación',style: TextStyle(fontSize: responsive.ip(2))),
                   SizedBox(height: responsive.hp(2),),
-                   Container(
+                  SizedBox(
                     width: responsive.wp(75),
                     height: responsive.hp(30),
                     child: _loading
@@ -181,19 +192,21 @@ class _Form1ScreenState extends State<Form1Screen> {
                             },
                           ),
                   ),
+                  //CustomMaps(),
                   SizedBox(height: responsive.hp(2),),
                   Text('Prueba',style: TextStyle(fontSize: responsive.ip(2))),
                   SizedBox(height: responsive.hp(2),),
-                  BtonImage(onClick: pickImage,),
-                  Container(
+                  SizedBox(
                     width: responsive.wp(75),
                     height: responsive.hp(30),
                     child: image != null? Image.file(image!, fit: BoxFit.cover,): Image.asset('assets/images/noImage.jpg', fit: BoxFit.cover,)),
                   SizedBox(height: responsive.hp(3)),
+                  BtonImage(onClick: pickImage,),
+                  SizedBox(height: responsive.hp(3)),
                   ElevatedButton(
                     onPressed: () async{
                       await addFormFichaCampo("Ficha de campo para evalución de predios" ,provinciaController.text, cantonController.text,
-                      parroquiaController.text, cedulaController.text, superficieController.text, _useForestal, _center.latitude,_center.longitude, image, DateTime.now()).then((_) {
+                      parroquiaController.text, cedulaController.text, superficieController.text, _useForestal, _center.latitude,_center.longitude, url, DateTime.now()).then((_) {
                       context.pushReplacement('/reportes');
                       setState(() {
                       });
