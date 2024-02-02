@@ -21,13 +21,13 @@ class Form5Controller {
   TextEditingController escrituraPredController = TextEditingController(text: "");
   TextEditingController fechaPreController = TextEditingController(text: "");
 
-  void subirDatos(context, tipo, calidad, aprovechamiento) async {
+  void subirDatos(context, tipo, calidad, aprovechamiento, center, url) async {
     await addPlanAprovechamientoForestal("Plan de aprovechamiento forestal" , tipo, razonSocController.text, cedRucController.text,
       representanteController.text, cedRepresentanteController.text, direccionEmpController.text, ciudadController.text,telefonoController.text, emailController.text,
       calidad, aprovechamiento, especiesController.text, numArbolesController.text, volumController.text, especieAprovController.text, nombreaCieController.text,
       costoProyectController.text , nombrePredController.text , matriculaPredController.text , escrituraPredController.text ,
-      fechaPreController.text, DateTime.now(), ).then((_) {
+      fechaPreController.text, center.latitude, center.longitude, url, DateTime.now(), ).then((_) {
       context.pushReplacement('/reportes');
-    });
+      });
   }
 }

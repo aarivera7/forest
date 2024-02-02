@@ -18,12 +18,11 @@ class Form6Controller {
   TextEditingController cedulaController = TextEditingController(text: "");
   TextEditingController cargoPredController = TextEditingController(text: "");
 
-  void subirDatos(context, acta, accion) async {
-    await addPActaRetencionProductos("Acta de retención de productos forestales y vida silvestre", acta,nombreEmprProdController.text, cantidadController.text,
-      presentacionController.text, registroController.text, numLoteEmpController.text, fechaController.text,produccionController.text, vencimientoController.text,
-      nombreLicEmpresaController.text, nombreLicDecomisaController.text, accion,notificadoEmpresaController.text, observacionController.text, nombreController.text,
-      cedulaController.text , cargoPredController.text,  DateTime.now()).then((_) {
-      context.pushReplacement('/reportes');
-      });
+  void subirDatos(context, acta, accion, center, url) async {
+    await addPActaRetencionProductos("Acta de retención de productos forestales y vida silvestre", acta,nombreEmprProdController.text, cantidadController.text, presentacionController.text, registroController.text, numLoteEmpController.text, fechaController.text,produccionController.text, vencimientoController.text,
+    nombreLicEmpresaController.text, nombreLicDecomisaController.text, accion,notificadoEmpresaController.text, observacionController.text, nombreController.text,
+    cedulaController.text , cargoPredController.text,  center.latitude, center.longitude, url, DateTime.now()).then((_) {
+    context.pushReplacement('/reportes');
+    });
   }
 }

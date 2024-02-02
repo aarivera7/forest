@@ -15,10 +15,10 @@ class Form4Controller {
   TextEditingController misionController = TextEditingController(text: "");
   TextEditingController visionController = TextEditingController(text: "");
 
-  void subirDatos(context) async {
+  void subirDatos(context, center, url) async {
     await addFormPostulacion("Formulario de postulación" ,razonEmpController.text, representController.text,
       rucController.text, ciudadController.text, direcController.text, contactoController.text,numeroEmpleController.text, categoriaController.text,
-      productosController.text, anosFuncionamientoController.text, misionController.text, visionController.text, DateTime.now())
+      productosController.text, anosFuncionamientoController.text, misionController.text, visionController.text, center.latitude, center.longitude, url, DateTime.now())
       .then((_) {
         context.pushReplacement('/reportes');
       });
